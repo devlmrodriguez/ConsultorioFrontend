@@ -1,4 +1,4 @@
-import { ValueLabel } from "./value-label";
+import { ValueLabel } from "../common/value-label";
 
 export interface AuthTenantsResponse {
   tenants: ValueLabel[];
