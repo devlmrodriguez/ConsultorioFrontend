@@ -1,4 +1,4 @@
-export const BASE_API_URL = import.meta.env.VITE_BASE_API_URL as string;
+export const BASE_API_URL = import.meta.env.VITE_BASE_BACKEND_API_URL as string;
 
 export const API_ROUTES = {
   AuthTenants: "/Auth/Tenants",

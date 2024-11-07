@@ -5,7 +5,7 @@ import { AuthRefreshResponse } from "../models/auth/auth-refresh-response";
 import { AuthRefreshRequest } from "../models/auth/auth-refresh-request";
 
 export const axiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_BASE_API_URL as string,
+  baseURL: import.meta.env.VITE_BASE_BACKEND_API_URL as string,
   headers: {
     Accept: "application/json, text/plain, */*",
     "Content-Type": "application/json",
