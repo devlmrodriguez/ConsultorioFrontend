@@ -1,4 +1,4 @@
-import { createFileRoute, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, Navigate, useNavigate } from "@tanstack/react-router";
 import {
   Alert,
   Button,
@@ -22,14 +22,17 @@ import { AuthLoginResponse } from "../models/auth/auth-login-response";
 import { useApiQuery } from "../hooks/api-query.hook";
 import { AuthTenantsResponse } from "../models/auth/auth-tenants-response";
 import { formatApiError } from "../utils/api-helpers";
-import { useUserStore } from "../stores/user-store";
+import { useUserCredentialsStore } from "../stores/user-credentials-store";
+import { Helmet } from "react-helmet-async";
 
 export const Route = createFileRoute("/login")({
   component: RouteComponent,
 });
 
 function RouteComponent() {
-  const userStore = useUserStore();
+  const userCredentialsStore = useUserCredentialsStore();
+  const userCredentials = userCredentialsStore.userCredentials;
+  const setCredentials = userCredentialsStore.setCredentials;
 
   const authTenantsQuery = useApiQuery<AuthTenantsResponse>(
     API_ROUTES.AuthTenants,
@@ -60,7 +63,7 @@ function RouteComponent() {
     const request: AuthLoginRequest = form.getValues();
     authLoginMutation.mutate(request, {
       onSuccess: (response) => {
-        userStore.setCredentials({
+        setCredentials({
           tenantId: response.tenantId,
           userId: response.userId,
           accessToken: response.accessToken,
@@ -72,68 +75,78 @@ function RouteComponent() {
     });
   };
 
+  if (userCredentials !== null) {
+    return <Navigate to="/dashboard" replace />;
+  }
+
   return (
-    <Container size="xs">
-      <Space h="xl" />
-      <form onSubmit={form.onSubmit(onSubmitForm)}>
-        <Card shadow="sm" padding="lg" radius="md" withBorder pos="relative">
-          <LoadingOverlay
-            visible={authLoginMutation.isPending}
-            zIndex={1000}
-            overlayProps={{ radius: "sm", blur: 2 }}
-          />
-          <Stack>
-            <Title order={1} size="h4">
-              Ingresar al sistema
-            </Title>
-            <Select
-              label="Consultorio"
-              placeholder="Seleccione su consultorio"
-              data={authTenantsQuery.data?.tenants ?? []}
-              withAsterisk
-              key={form.key("tenantId")}
-              {...form.getInputProps("tenantId")}
+    <>
+      <Helmet>
+        <title>Consultorio | Login</title>
+      </Helmet>
+
+      <Container size="xs">
+        <Space h="xl" />
+        <form onSubmit={form.onSubmit(onSubmitForm)}>
+          <Card shadow="sm" padding="lg" radius="md" withBorder pos="relative">
+            <LoadingOverlay
+              visible={authLoginMutation.isPending}
+              zIndex={1000}
+              overlayProps={{ radius: "sm", blur: 2 }}
             />
-            <TextInput
-              label="Usuario"
-              withAsterisk
-              key={form.key("email")}
-              {...form.getInputProps("email")}
-            />
-            <PasswordInput
-              label="Contraseña"
-              withAsterisk
-              key={form.key("password")}
-              {...form.getInputProps("password")}
-            />
-            {(authTenantsQuery.isError || authLoginMutation.isError) && (
-              <Alert variant="light" color="red" title="Error">
-                {authTenantsQuery.error &&
-                  formatApiError(authTenantsQuery.error).map(
-                    (message, index) => <Text key={index}>{message}</Text>,
-                  )}
-                {authLoginMutation.error &&
-                  formatApiError(authLoginMutation.error).map(
-                    (message, index) => <Text key={index}>{message}</Text>,
-                  )}
-              </Alert>
-            )}
-            <Center>
-              <Button
-                variant="filled"
-                type="submit"
-                disabled={
-                  authTenantsQuery.isPending ||
-                  authTenantsQuery.isError ||
-                  authLoginMutation.isSuccess
-                }
-              >
-                Ingresar
-              </Button>
-            </Center>
-          </Stack>
-        </Card>
-      </form>
-    </Container>
+            <Stack>
+              <Title order={1} size="h4">
+                Ingresar al sistema
+              </Title>
+              <Select
+                label="Consultorio"
+                placeholder="Seleccione su consultorio"
+                data={authTenantsQuery.data?.tenants ?? []}
+                withAsterisk
+                key={form.key("tenantId")}
+                {...form.getInputProps("tenantId")}
+              />
+              <TextInput
+                label="Usuario"
+                withAsterisk
+                key={form.key("email")}
+                {...form.getInputProps("email")}
+              />
+              <PasswordInput
+                label="Contraseña"
+                withAsterisk
+                key={form.key("password")}
+                {...form.getInputProps("password")}
+              />
+              {(authTenantsQuery.isError || authLoginMutation.isError) && (
+                <Alert variant="light" color="red" title="Error">
+                  {authTenantsQuery.error &&
+                    formatApiError(authTenantsQuery.error).map(
+                      (message, index) => <Text key={index}>{message}</Text>,
+                    )}
+                  {authLoginMutation.error &&
+                    formatApiError(authLoginMutation.error).map(
+                      (message, index) => <Text key={index}>{message}</Text>,
+                    )}
+                </Alert>
+              )}
+              <Center>
+                <Button
+                  variant="filled"
+                  type="submit"
+                  disabled={
+                    authTenantsQuery.isPending ||
+                    authTenantsQuery.isError ||
+                    authLoginMutation.isSuccess
+                  }
+                >
+                  Ingresar
+                </Button>
+              </Center>
+            </Stack>
+          </Card>
+        </form>
+      </Container>
+    </>
   );
 }

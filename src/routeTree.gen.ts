@@ -8,12 +8,22 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
+import { createFileRoute } from "@tanstack/react-router";
+
 // Import Routes
 
 import { Route as rootRoute } from "./routes/__root";
 import { Route as LoginImport } from "./routes/login";
 import { Route as AuthenticatedImport } from "./routes/_authenticated";
-import { Route as AuthenticatedDashboardIndexImport } from "./routes/_authenticated/dashboard/index";
+import { Route as IndexImport } from "./routes/index";
+import { Route as AuthenticatedDashboardLayoutImport } from "./routes/_authenticated/dashboard/_layout";
+import { Route as AuthenticatedDashboardLayoutIndexImport } from "./routes/_authenticated/dashboard/_layout/index";
+
+// Create Virtual Routes
+
+const AuthenticatedDashboardImport = createFileRoute(
+  "/_authenticated/dashboard",
+)();
 
 // Create/Update Routes
 
@@ -28,17 +38,42 @@ const AuthenticatedRoute = AuthenticatedImport.update({
   getParentRoute: () => rootRoute,
 } as any);
 
-const AuthenticatedDashboardIndexRoute =
-  AuthenticatedDashboardIndexImport.update({
-    id: "/dashboard/",
-    path: "/dashboard/",
-    getParentRoute: () => AuthenticatedRoute,
+const IndexRoute = IndexImport.update({
+  id: "/",
+  path: "/",
+  getParentRoute: () => rootRoute,
+} as any);
+
+const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
+  id: "/dashboard",
+  path: "/dashboard",
+  getParentRoute: () => AuthenticatedRoute,
+} as any);
+
+const AuthenticatedDashboardLayoutRoute =
+  AuthenticatedDashboardLayoutImport.update({
+    id: "/_layout",
+    getParentRoute: () => AuthenticatedDashboardRoute,
+  } as any);
+
+const AuthenticatedDashboardLayoutIndexRoute =
+  AuthenticatedDashboardLayoutIndexImport.update({
+    id: "/",
+    path: "/",
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
   } as any);
 
 // Populate the FileRoutesByPath interface
 
 declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexImport;
+      parentRoute: typeof rootRoute;
+    };
     "/_authenticated": {
       id: "/_authenticated";
       path: "";
@@ -53,24 +88,68 @@ declare module "@tanstack/react-router" {
       preLoaderRoute: typeof LoginImport;
       parentRoute: typeof rootRoute;
     };
-    "/_authenticated/dashboard/": {
-      id: "/_authenticated/dashboard/";
+    "/_authenticated/dashboard": {
+      id: "/_authenticated/dashboard";
       path: "/dashboard";
       fullPath: "/dashboard";
-      preLoaderRoute: typeof AuthenticatedDashboardIndexImport;
+      preLoaderRoute: typeof AuthenticatedDashboardImport;
       parentRoute: typeof AuthenticatedImport;
+    };
+    "/_authenticated/dashboard/_layout": {
+      id: "/_authenticated/dashboard/_layout";
+      path: "/dashboard";
+      fullPath: "/dashboard";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutImport;
+      parentRoute: typeof AuthenticatedDashboardRoute;
+    };
+    "/_authenticated/dashboard/_layout/": {
+      id: "/_authenticated/dashboard/_layout/";
+      path: "/";
+      fullPath: "/dashboard/";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutIndexImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
     };
   }
 }
 
 // Create and export the route tree
 
+interface AuthenticatedDashboardLayoutRouteChildren {
+  AuthenticatedDashboardLayoutIndexRoute: typeof AuthenticatedDashboardLayoutIndexRoute;
+}
+
+const AuthenticatedDashboardLayoutRouteChildren: AuthenticatedDashboardLayoutRouteChildren =
+  {
+    AuthenticatedDashboardLayoutIndexRoute:
+      AuthenticatedDashboardLayoutIndexRoute,
+  };
+
+const AuthenticatedDashboardLayoutRouteWithChildren =
+  AuthenticatedDashboardLayoutRoute._addFileChildren(
+    AuthenticatedDashboardLayoutRouteChildren,
+  );
+
+interface AuthenticatedDashboardRouteChildren {
+  AuthenticatedDashboardLayoutRoute: typeof AuthenticatedDashboardLayoutRouteWithChildren;
+}
+
+const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
+  {
+    AuthenticatedDashboardLayoutRoute:
+      AuthenticatedDashboardLayoutRouteWithChildren,
+  };
+
+const AuthenticatedDashboardRouteWithChildren =
+  AuthenticatedDashboardRoute._addFileChildren(
+    AuthenticatedDashboardRouteChildren,
+  );
+
 interface AuthenticatedRouteChildren {
-  AuthenticatedDashboardIndexRoute: typeof AuthenticatedDashboardIndexRoute;
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren;
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
-  AuthenticatedDashboardIndexRoute: AuthenticatedDashboardIndexRoute,
+  AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
 };
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
@@ -78,39 +157,54 @@ const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
 );
 
 export interface FileRoutesByFullPath {
+  "/": typeof IndexRoute;
   "": typeof AuthenticatedRouteWithChildren;
   "/login": typeof LoginRoute;
-  "/dashboard": typeof AuthenticatedDashboardIndexRoute;
+  "/dashboard": typeof AuthenticatedDashboardLayoutRouteWithChildren;
+  "/dashboard/": typeof AuthenticatedDashboardLayoutIndexRoute;
 }
 
 export interface FileRoutesByTo {
+  "/": typeof IndexRoute;
   "": typeof AuthenticatedRouteWithChildren;
   "/login": typeof LoginRoute;
-  "/dashboard": typeof AuthenticatedDashboardIndexRoute;
+  "/dashboard": typeof AuthenticatedDashboardLayoutIndexRoute;
 }
 
 export interface FileRoutesById {
   __root__: typeof rootRoute;
+  "/": typeof IndexRoute;
   "/_authenticated": typeof AuthenticatedRouteWithChildren;
   "/login": typeof LoginRoute;
-  "/_authenticated/dashboard/": typeof AuthenticatedDashboardIndexRoute;
+  "/_authenticated/dashboard": typeof AuthenticatedDashboardRouteWithChildren;
+  "/_authenticated/dashboard/_layout": typeof AuthenticatedDashboardLayoutRouteWithChildren;
+  "/_authenticated/dashboard/_layout/": typeof AuthenticatedDashboardLayoutIndexRoute;
 }
 
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath;
-  fullPaths: "" | "/login" | "/dashboard";
+  fullPaths: "/" | "" | "/login" | "/dashboard" | "/dashboard/";
   fileRoutesByTo: FileRoutesByTo;
-  to: "" | "/login" | "/dashboard";
-  id: "__root__" | "/_authenticated" | "/login" | "/_authenticated/dashboard/";
+  to: "/" | "" | "/login" | "/dashboard";
+  id:
+    | "__root__"
+    | "/"
+    | "/_authenticated"
+    | "/login"
+    | "/_authenticated/dashboard"
+    | "/_authenticated/dashboard/_layout"
+    | "/_authenticated/dashboard/_layout/";
   fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
+  IndexRoute: typeof IndexRoute;
   AuthenticatedRoute: typeof AuthenticatedRouteWithChildren;
   LoginRoute: typeof LoginRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
+  IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
 };
@@ -125,22 +219,40 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
+        "/",
         "/_authenticated",
         "/login"
       ]
     },
+    "/": {
+      "filePath": "index.tsx"
+    },
     "/_authenticated": {
       "filePath": "_authenticated.tsx",
       "children": [
-        "/_authenticated/dashboard/"
+        "/_authenticated/dashboard"
       ]
     },
     "/login": {
       "filePath": "login.tsx"
     },
-    "/_authenticated/dashboard/": {
-      "filePath": "_authenticated/dashboard/index.tsx",
-      "parent": "/_authenticated"
+    "/_authenticated/dashboard": {
+      "filePath": "_authenticated/dashboard",
+      "parent": "/_authenticated",
+      "children": [
+        "/_authenticated/dashboard/_layout"
+      ]
+    },
+    "/_authenticated/dashboard/_layout": {
+      "filePath": "_authenticated/dashboard/_layout.tsx",
+      "parent": "/_authenticated/dashboard",
+      "children": [
+        "/_authenticated/dashboard/_layout/"
+      ]
+    },
+    "/_authenticated/dashboard/_layout/": {
+      "filePath": "_authenticated/dashboard/_layout/index.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
     }
   }
 }

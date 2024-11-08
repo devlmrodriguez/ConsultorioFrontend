@@ -3,6 +3,7 @@ import React from "react";
 import "@mantine/core/styles.css";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { HelmetProvider } from "react-helmet-async";
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -38,9 +39,11 @@ export const Route = createRootRoute({
   component: () => (
     <MantineProvider theme={theme}>
       <QueryClientProvider client={queryClient}>
-        <Outlet />
-        <TanStackRouterDevtools />
-        <ReactQueryDevtools />
+        <HelmetProvider>
+          <Outlet />
+          <TanStackRouterDevtools />
+          <ReactQueryDevtools />
+        </HelmetProvider>
       </QueryClientProvider>
     </MantineProvider>
   ),

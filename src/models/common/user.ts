@@ -1,6 +1,6 @@
 export interface User {
-  tenantId: string;
-  userId: string;
-  accessToken: string;
-  refreshToken: string;
+  email: string;
+  firstName: string;
+  middleName?: string;
+  lastName: string;
 }

@@ -6,4 +6,5 @@ export const API_ROUTES = {
   AuthRefresh: "/Auth/Refresh",
   AuthLogout: "/Auth/Logout",
   AuthCheck: "/Auth/Check",
+  User: "/User",
 };
