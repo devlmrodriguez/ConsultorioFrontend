@@ -1,5 +1,7 @@
 // Setup axios early to avoid duplication and concurrent errors
 import "./utils/axios-setup";
+// Setup es-zod early
+import "./utils/es-zod";
 
 import { StrictMode } from "react";
 import ReactDOM from "react-dom/client";

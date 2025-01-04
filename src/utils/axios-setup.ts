@@ -1,5 +1,5 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
-import { useUserCredentialsStore } from "../stores/user-credentials-store";
+import { useCredentialsStore } from "../stores/credentials-store";
 import { API_ROUTES } from "../constants/api-routes";
 import { AuthRefreshResponse } from "../models/auth/auth-refresh-response";
 import { AuthRefreshRequest } from "../models/auth/auth-refresh-request";
@@ -16,8 +16,7 @@ export const axiosInstance = axios.create({
 // Interceptor for request (adds JWT)
 axiosInstance.interceptors.request.use(
   (config) => {
-    const accessToken =
-      useUserCredentialsStore.getState().userCredentials?.accessToken;
+    const accessToken = useCredentialsStore.getState().credentials?.accessToken;
 
     if (accessToken !== undefined) {
       config.headers.Authorization = `Bearer ${accessToken}`;
@@ -48,10 +47,9 @@ axiosInstance.interceptors.response.use(
       originalConfig !== undefined &&
       !originalConfig._retry
     ) {
-      const storedUserCredentials =
-        useUserCredentialsStore.getState().userCredentials;
+      const storedCredentials = useCredentialsStore.getState().credentials;
 
-      if (storedUserCredentials === null) {
+      if (storedCredentials === null) {
         return Promise.reject(originalError);
       }
 
@@ -59,9 +57,9 @@ axiosInstance.interceptors.response.use(
 
       try {
         const request: AuthRefreshRequest = {
-          tenantId: storedUserCredentials.tenantId,
-          userId: storedUserCredentials.userId,
-          refreshToken: storedUserCredentials.refreshToken,
+          tenantId: storedCredentials.tenantId,
+          userId: storedCredentials.userId,
+          refreshToken: storedCredentials.refreshToken,
         };
 
         const config: CustomAxiosRequestConfig = {
@@ -75,9 +73,9 @@ axiosInstance.interceptors.response.use(
           config,
         );
 
-        useUserCredentialsStore.setState({
-          userCredentials: {
-            ...storedUserCredentials,
+        useCredentialsStore.setState({
+          credentials: {
+            ...storedCredentials,
             accessToken: response.data.accessToken,
             refreshToken: response.data.refreshToken,
           },
@@ -90,7 +88,7 @@ axiosInstance.interceptors.response.use(
         return await axiosInstance(originalConfig);
       } catch (newError) {
         if (newError instanceof AxiosError) {
-          useUserCredentialsStore.getState().removeCredentials();
+          useCredentialsStore.getState().removeCredentials();
         }
 
         console.debug("Authentication (JWT) failed to refresh");

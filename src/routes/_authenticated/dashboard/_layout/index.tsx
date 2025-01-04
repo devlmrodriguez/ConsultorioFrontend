@@ -1,5 +1,5 @@
 import { createFileRoute } from "@tanstack/react-router";
-import { useUserCredentialsStore } from "../../../../stores/user-credentials-store";
+import { useCredentialsStore } from "../../../../stores/credentials-store";
 import { Container, Table, Textarea, Title } from "@mantine/core";
 
 export const Route = createFileRoute("/_authenticated/dashboard/_layout/")({
@@ -7,12 +7,14 @@ export const Route = createFileRoute("/_authenticated/dashboard/_layout/")({
 });
 
 function RouteComponent() {
-  const userCredentials = useUserCredentialsStore().userCredentials;
+  const credentialsStore = useCredentialsStore();
 
-  if (userCredentials !== null) {
+  if (credentialsStore.credentials !== null) {
     return (
       <Container fluid>
-        <Title>Detalles de usuario</Title>
+        <Title order={2} mb="md">
+          Detalles de usuario
+        </Title>
         <Table>
           <Table.Thead>
             <Table.Tr>
@@ -23,16 +25,19 @@ function RouteComponent() {
           <Table.Tbody>
             <Table.Tr>
               <Table.Td>TenantId</Table.Td>
-              <Table.Td>{userCredentials.tenantId}</Table.Td>
+              <Table.Td>{credentialsStore.credentials.tenantId}</Table.Td>
             </Table.Tr>
             <Table.Tr>
               <Table.Td>UserId</Table.Td>
-              <Table.Td>{userCredentials.userId}</Table.Td>
+              <Table.Td>{credentialsStore.credentials.userId}</Table.Td>
             </Table.Tr>
             <Table.Tr>
               <Table.Td>AccessToken</Table.Td>
               <Table.Td>
-                <Textarea readOnly defaultValue={userCredentials.accessToken} />
+                <Textarea
+                  readOnly
+                  defaultValue={credentialsStore.credentials.accessToken}
+                />
               </Table.Td>
             </Table.Tr>
             <Table.Tr>
@@ -40,7 +45,7 @@ function RouteComponent() {
               <Table.Td>
                 <Textarea
                   readOnly
-                  defaultValue={userCredentials.refreshToken}
+                  defaultValue={credentialsStore.credentials.refreshToken}
                 />
               </Table.Td>
             </Table.Tr>

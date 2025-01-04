@@ -1,4 +1,4 @@
-export interface UserCredentials {
+export interface Credentials {
   tenantId: string;
   userId: string;
   accessToken: string;
