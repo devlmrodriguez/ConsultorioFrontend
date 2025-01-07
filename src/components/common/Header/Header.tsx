@@ -13,7 +13,7 @@ import { IconChevronDown, IconLogout, IconSettings } from "@tabler/icons-react";
 import { useState } from "react";
 import { useApiQuery } from "../../../hooks/api-query.hook";
 import { API_ROUTES } from "../../../constants/api-routes";
-import { User } from "../../../models/common/user";
+import { AccountData } from "../../../models/common/account-data";
 import classes from "./Header.module.css";
 
 interface HeaderProps {
@@ -24,7 +24,9 @@ interface HeaderProps {
 
 export function Header(props: HeaderProps) {
   const [userMenuOpened, setUserMenuOpened] = useState(false);
-  const userQuery = useApiQuery<User>(API_ROUTES.User, ["user"]);
+  const accountDataQuery = useApiQuery<AccountData>(API_ROUTES.AccountData, [
+    "account",
+  ]);
 
   return (
     <Group h="100%" px="md" justify="space-between">
@@ -58,18 +60,22 @@ export function Header(props: HeaderProps) {
             })}
           >
             <Group gap={7}>
-              {userQuery.data === undefined ? (
+              {accountDataQuery.data === undefined ? (
                 <Loader />
               ) : (
                 <>
                   <Avatar
                     src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png"
-                    alt={userQuery.data.firstName + userQuery.data.lastName}
+                    alt={
+                      accountDataQuery.data.firstName +
+                      accountDataQuery.data.lastName
+                    }
                     radius="xl"
                     size={20}
                   />
                   <Text fw={500} size="sm" lh={1} mr={3}>
-                    {userQuery.data.firstName + userQuery.data.lastName}
+                    {accountDataQuery.data.firstName +
+                      accountDataQuery.data.lastName}
                   </Text>
                   <IconChevronDown size={12} stroke={1.5} />
                 </>

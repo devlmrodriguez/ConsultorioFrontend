@@ -1,4 +1,4 @@
-import { AppShell } from "@mantine/core";
+import { AppShell, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Header } from "../Header/Header";
 import { Navbar } from "../Navbar/Navbar";
@@ -15,7 +15,7 @@ export function Shell() {
 
   const logoutMutation = useApiMutation<unknown, AuthLogoutRequest>(
     API_ROUTES.AuthLogout,
-    "POST",
+    "POST"
   );
 
   const navigate = useNavigate({ from: "/dashboard" });
@@ -65,7 +65,9 @@ export function Shell() {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Outlet />
+        <Container>
+          <Outlet />
+        </Container>
       </AppShell.Main>
     </AppShell>
   );

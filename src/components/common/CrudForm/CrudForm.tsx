@@ -1,10 +1,9 @@
-import { Button, Container, Stack } from "@mantine/core";
-import { useForm, UseFormReturnType, zodResolver } from "@mantine/form";
+import { Button, Group, Stack } from "@mantine/core";
+import { FormErrors, useForm, UseFormReturnType, zodResolver } from "@mantine/form";
 import React from "react";
 import { ZodSchema } from "zod";
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export interface CrudFormProps<TData extends Record<string, any>> {
+export interface CrudFormProps<TData extends Record<string, unknown>> {
   data?: TData;
   readOnly?: boolean;
   onCreateClick?: (data: TData) => void;
@@ -14,11 +13,9 @@ export interface CrudFormProps<TData extends Record<string, any>> {
 
 // Internal props with schema and children
 interface InternalCrudFormProps<
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  TData extends Record<string, any>,
+  TData extends Record<string, unknown>,
 > extends CrudFormProps<TData> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  schema: ZodSchema<Record<string, any>>;
+  schema: ZodSchema<TData>;
 
   // Render prop, pass form to inner children
   children: (
@@ -26,8 +23,7 @@ interface InternalCrudFormProps<
   ) => React.ReactNode;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function CrudForm<TData extends Record<string, any>>(
+export function CrudForm<TData extends Record<string, unknown>>(
   props: InternalCrudFormProps<TData>,
 ) {
   const form = useForm<TData>({
@@ -36,36 +32,37 @@ export function CrudForm<TData extends Record<string, any>>(
     validate: zodResolver(props.schema),
   });
 
-  const onSubmitForm = () => {
-    const data = form.getValues();
+  const onSubmitForm = (values: TData) => {
     if (props.data === undefined) {
-      props.onCreateClick?.(data);
+      props.onCreateClick?.(values);
     } else {
-      props.onUpdateClick?.(data);
+      props.onUpdateClick?.(values);
     }
   };
 
+  const onError = (errors: FormErrors) => { console.log("error lmao", errors); };
+
   const onDeleteClick = () => {
-    const data = form.getValues();
-    props.onDeleteClick?.(data);
+    const values = form.getValues();
+    props.onDeleteClick?.(values);
   };
 
   return (
-    <form onSubmit={form.onSubmit(onSubmitForm)}>
+    <form onSubmit={form.onSubmit(onSubmitForm, onError)}>
       <Stack>
         {props.children(form)}
 
         {!props.readOnly && (
-          <Container>
+          <Group>
             <Button type="submit">
               {props.data === undefined ? "Agregar" : "Actualizar"}
             </Button>
             {props.data !== undefined && (
-              <Button type="button" onClick={onDeleteClick}>
+              <Button type="button" onClick={onDeleteClick} color="red">
                 Eliminar
               </Button>
             )}
-          </Container>
+          </Group>
         )}
       </Stack>
     </form>

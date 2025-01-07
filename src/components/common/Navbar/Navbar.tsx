@@ -4,6 +4,7 @@ import {
   IconBellRinging,
   IconDatabaseImport,
   IconFingerprint,
+  IconHome,
   IconKey,
   IconLogout,
   IconReceipt2,
@@ -11,7 +12,6 @@ import {
   IconUser,
   IconUsers,
 } from "@tabler/icons-react";
-import { useState } from "react";
 import classes from "./Navbar.module.css";
 import { Link } from "@tanstack/react-router";
 
@@ -30,22 +30,24 @@ interface NavbarProps {
 }
 
 export function Navbar(props: NavbarProps) {
-  const [active, setActive] = useState("Billing");
-
   const links = [
-    <Link className={classes.link} key="Clientes" to="/dashboard/clientes">
+    <Link className={classes.link} key="Inicio" to="/dashboard" activeProps={{"data-active": true}} activeOptions={{ exact: true }}>
+      <IconHome className={classes.linkIcon} stroke={1.5} />
+      <span>Inicio</span>
+    </Link>,
+    <Link className={classes.link} key="Clientes" to="/dashboard/clientes" activeProps={{"data-active": true}} activeOptions={{ exact: true }}>
       <IconUsers className={classes.linkIcon} stroke={1.5} />
       <span>Clientes</span>
     </Link>,
     ...data.map((item) => (
       <a
         className={classes.link}
-        data-active={item.label === active || undefined}
+        // data-active={item.label === active || undefined}
         href={item.link}
         key={item.label}
         onClick={(event) => {
           event.preventDefault();
-          setActive(item.label);
+          // setActive(item.label);
         }}
       >
         <item.icon className={classes.linkIcon} stroke={1.5} />
@@ -67,7 +69,7 @@ export function Navbar(props: NavbarProps) {
           }}
         >
           <IconUser className={classes.linkIcon} stroke={1.5} />
-          <span>Mi usuario</span>
+          <span>Mi cuenta</span>
         </a>
 
         <a

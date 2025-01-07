@@ -1,10 +1,12 @@
 import { createRootRoute, Outlet } from "@tanstack/react-router";
-import React from "react";
+import React, { Suspense } from "react";
 import "@mantine/core/styles.css";
 import "@mantine/dates/styles.css";
 import { createTheme, MantineProvider } from "@mantine/core";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { HelmetProvider } from "react-helmet-async";
+import { DatesProvider } from "@mantine/dates";
+import "dayjs/locale/es";
 
 const theme = createTheme({
   /** Put your mantine theme override here */
@@ -39,13 +41,17 @@ const queryClient = new QueryClient();
 export const Route = createRootRoute({
   component: () => (
     <MantineProvider theme={theme}>
-      <QueryClientProvider client={queryClient}>
-        <HelmetProvider>
-          <Outlet />
-          <TanStackRouterDevtools />
-          <ReactQueryDevtools />
-        </HelmetProvider>
-      </QueryClientProvider>
+      <DatesProvider settings={{ locale: "es" }}>
+        <QueryClientProvider client={queryClient}>
+          <HelmetProvider>
+            <Outlet />
+            <Suspense>
+              <TanStackRouterDevtools />
+              <ReactQueryDevtools />
+            </Suspense>
+          </HelmetProvider>
+        </QueryClientProvider>
+      </DatesProvider>
     </MantineProvider>
   ),
 });

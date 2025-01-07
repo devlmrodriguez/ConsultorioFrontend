@@ -36,6 +36,7 @@ export function ClientForm(props: CrudFormProps<ClientData>) {
           <DateInput
             label="Fecha de nacimiento"
             withAsterisk
+            valueFormat="DD/MM/YYYY"
             key={form.key("dateOfBirth")}
             {...form.getInputProps("dateOfBirth")}
             readOnly={props.readOnly}
