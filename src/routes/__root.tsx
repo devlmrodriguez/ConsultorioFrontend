@@ -12,8 +12,10 @@ const theme = createTheme({
   /** Put your mantine theme override here */
 });
 
+// MUST USE process.env.NODE_ENV in case we are running from demo mode
+
 const TanStackRouterDevtools =
-  import.meta.env.MODE === "production"
+  process.env.NODE_ENV === "production"
     ? () => null // Render nothing in production
     : React.lazy(() =>
         // Lazy load in development
@@ -25,7 +27,7 @@ const TanStackRouterDevtools =
       );
 
 const ReactQueryDevtools =
-  import.meta.env.MODE === "production"
+  process.env.NODE_ENV === "production"
     ? () => null // Render nothing in production
     : React.lazy(() =>
         // Lazy load in development
