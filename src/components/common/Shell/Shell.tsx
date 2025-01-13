@@ -2,7 +2,7 @@ import { AppShell, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { Header } from "../Header/Header";
 import { Navbar } from "../Navbar/Navbar";
-import { Outlet, useNavigate } from "@tanstack/react-router";
+import { CatchBoundary, Outlet, useNavigate } from "@tanstack/react-router";
 import { useCredentialsStore } from "../../../stores/credentials-store";
 import { useApiMutation } from "../../../hooks/api-mutation.hook";
 import { API_ROUTES } from "../../../constants/api-routes";
@@ -15,7 +15,7 @@ export function Shell() {
 
   const logoutMutation = useApiMutation<unknown, AuthLogoutRequest>(
     API_ROUTES.AuthLogout,
-    "POST"
+    "POST",
   );
 
   const navigate = useNavigate({ from: "/dashboard" });
@@ -65,9 +65,11 @@ export function Shell() {
       </AppShell.Navbar>
 
       <AppShell.Main>
-        <Container>
-          <Outlet />
-        </Container>
+        <CatchBoundary getResetKey={() => "reset"}>
+          <Container>
+            <Outlet />
+          </Container>
+        </CatchBoundary>
       </AppShell.Main>
     </AppShell>
   );

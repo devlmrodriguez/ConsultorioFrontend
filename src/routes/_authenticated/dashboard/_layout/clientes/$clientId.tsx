@@ -5,15 +5,19 @@ import {
 } from "@tanstack/react-router";
 import { ClientForm } from "../../../../../components/client/ClientForm";
 import { Button, Group, Loader, Stack } from "@mantine/core";
-import { useClientQuery } from "../../../../../hooks/client-query-hook";
+import {
+  readClientDataSchema,
+  SaveClientData,
+  saveClientDataSchema,
+} from "../../../../../models/client/client-data";
 import {
   useClientDeleteMutation,
+  useClientQuery,
   useClientUpdateMutation,
-} from "../../../../../hooks/client-mutation.hook";
-import { ClientData } from "../../../../../models/client/client-data";
+} from "../../../../../hooks/client-hooks";
 
 export const Route = createFileRoute(
-  "/_authenticated/dashboard/_layout/clientes/$clientId"
+  "/_authenticated/dashboard/_layout/clientes/$clientId",
 )({
   component: RouteComponent,
 });
@@ -27,9 +31,10 @@ function RouteComponent() {
   const updateMutation = useClientUpdateMutation(clientId);
   const deleteMutation = useClientDeleteMutation();
 
-  const onUpdateClick = (clientData: ClientData) => {
+  const onUpdateClick = (saveClientData: SaveClientData) => {
+    const parsedData = saveClientDataSchema.parse(saveClientData);
     void updateMutation
-      .mutateAsync(clientData)
+      .mutateAsync(parsedData)
       .then(() => navigate({ to: "/dashboard/clientes" }));
   };
 
@@ -47,6 +52,8 @@ function RouteComponent() {
     return <Group>{query.error.details.title}</Group>;
   }
 
+  const parsedData = readClientDataSchema.parse(query.data);
+
   return (
     <Stack>
       <Group justify="start">
@@ -59,7 +66,7 @@ function RouteComponent() {
         </Button>
       </Group>
       <ClientForm
-        data={query.data}
+        data={parsedData}
         readOnly={false}
         onUpdateClick={onUpdateClick}
         onDeleteClick={onDeleteClick}

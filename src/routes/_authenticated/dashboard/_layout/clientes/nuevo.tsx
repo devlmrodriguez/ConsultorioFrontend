@@ -3,13 +3,16 @@ import {
   useNavigate,
   useRouter,
 } from "@tanstack/react-router";
-import { ClientData } from "../../../../../models/client/client-data";
+import {
+  SaveClientData,
+  saveClientDataSchema,
+} from "../../../../../models/client/client-data";
 import { ClientForm } from "../../../../../components/client/ClientForm";
-import { useClientCreateMutation } from "../../../../../hooks/client-mutation.hook";
 import { Button, Group, Stack } from "@mantine/core";
+import { useClientCreateMutation } from "../../../../../hooks/client-hooks";
 
 export const Route = createFileRoute(
-  "/_authenticated/dashboard/_layout/clientes/nuevo"
+  "/_authenticated/dashboard/_layout/clientes/nuevo",
 )({
   component: RouteComponent,
 });
@@ -20,9 +23,10 @@ function RouteComponent() {
 
   const createMutation = useClientCreateMutation();
 
-  const onCreateClick = (clientData: ClientData) => {
+  const onCreateClick = (saveClientData: SaveClientData) => {
+    const parsedData = saveClientDataSchema.parse(saveClientData);
     void createMutation
-      .mutateAsync(clientData)
+      .mutateAsync(parsedData)
       .then(() => navigate({ to: "/dashboard/clientes" }));
   };
 

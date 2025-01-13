@@ -1,26 +1,34 @@
-import { Select, Textarea, TextInput } from "@mantine/core";
+import { Select, Space, Switch, Textarea, TextInput } from "@mantine/core";
 import { DateInput } from "@mantine/dates";
-import { ClientData, clientDataSchema } from "../../models/client/client-data";
+import {
+  SaveClientData,
+  saveClientDataSchema,
+} from "../../models/client/client-data";
 import { idDocumentTypeValues } from "../../models/common/id-document-type";
 import { sexValues } from "../../models/common/sex";
 import { CrudForm, CrudFormProps } from "../common/CrudForm/CrudForm";
+import { useState } from "react";
+import { SaveClientRepresentativeData } from "../../models/client/client-representative-data";
+import { nestedPropertyOf } from "../../utils/nested-property-of";
 
-export function ClientForm(props: CrudFormProps<ClientData>) {
+export function ClientForm(props: CrudFormProps<SaveClientData>) {
+  const [showRepresentative, setShowRepresentative] = useState(
+    props.data !== undefined && props.data.representative !== null,
+  );
+
   return (
-    <CrudForm schema={clientDataSchema} {...props}>
+    <CrudForm saveSchema={saveClientDataSchema} {...props}>
       {(form) => (
         <>
           <TextInput
             label="Nombre"
             withAsterisk
-            key={form.key("firstName")}
             {...form.getInputProps("firstName")}
             readOnly={props.readOnly}
           />
 
           <TextInput
             label="Segundo nombre"
-            key={form.key("middleName")}
             {...form.getInputProps("middleName")}
             readOnly={props.readOnly}
           />
@@ -28,7 +36,6 @@ export function ClientForm(props: CrudFormProps<ClientData>) {
           <TextInput
             label="Apellidos"
             withAsterisk
-            key={form.key("lastName")}
             {...form.getInputProps("lastName")}
             readOnly={props.readOnly}
           />
@@ -37,21 +44,18 @@ export function ClientForm(props: CrudFormProps<ClientData>) {
             label="Fecha de nacimiento"
             withAsterisk
             valueFormat="DD/MM/YYYY"
-            key={form.key("dateOfBirth")}
             {...form.getInputProps("dateOfBirth")}
             readOnly={props.readOnly}
           />
 
           <TextInput
             label="Teléfono"
-            key={form.key("phoneNumber")}
             {...form.getInputProps("phoneNumber")}
             readOnly={props.readOnly}
           />
 
           <TextInput
             label="Email"
-            key={form.key("email")}
             {...form.getInputProps("email")}
             readOnly={props.readOnly}
           />
@@ -60,14 +64,12 @@ export function ClientForm(props: CrudFormProps<ClientData>) {
             label="Tipo de documento de identidad"
             placeholder="Seleccione ..."
             data={idDocumentTypeValues}
-            key={form.key("idDocumentType")}
             {...form.getInputProps("idDocumentType")}
             readOnly={props.readOnly}
           />
 
           <TextInput
             label="Documento de identidad"
-            key={form.key("idDocument")}
             {...form.getInputProps("idDocument")}
             readOnly={props.readOnly}
           />
@@ -77,14 +79,12 @@ export function ClientForm(props: CrudFormProps<ClientData>) {
             placeholder="Seleccione ..."
             withAsterisk
             data={sexValues}
-            key={form.key("sex")}
             {...form.getInputProps("sex")}
             readOnly={props.readOnly}
           />
 
           <TextInput
             label="Ocupación"
-            key={form.key("occupation")}
             {...form.getInputProps("occupation")}
             readOnly={props.readOnly}
           />
@@ -92,17 +92,97 @@ export function ClientForm(props: CrudFormProps<ClientData>) {
           <TextInput
             label="Dirección"
             withAsterisk
-            key={form.key("address")}
             {...form.getInputProps("address")}
             readOnly={props.readOnly}
           />
 
           <Textarea
             label="¿Cómo se enteró de nosotros?"
-            key={form.key("howDidYouLearnAboutUs")}
             {...form.getInputProps("howDidYouLearnAboutUs")}
             readOnly={props.readOnly}
           />
+
+          <Space />
+
+          <Switch
+            label="El cliente tiene apoderado"
+            checked={showRepresentative}
+            onChange={(event) => {
+              if (event.currentTarget.checked) {
+                form.setValues({
+                  representative:
+                    props.data?.representative ??
+                    ({} as SaveClientRepresentativeData),
+                });
+              } else {
+                form.setValues({
+                  representative: null,
+                });
+              }
+              setShowRepresentative(event.currentTarget.checked);
+            }}
+          />
+
+          {showRepresentative && (
+            <>
+              <TextInput
+                label="Relación del apoderado con el cliente"
+                withAsterisk
+                {...form.getInputProps(
+                  nestedPropertyOf<
+                    SaveClientData,
+                    SaveClientRepresentativeData
+                  >("representative", "relation"),
+                )}
+                readOnly={props.readOnly}
+              />
+
+              <TextInput
+                label="Nombre completo del apoderado"
+                withAsterisk
+                {...form.getInputProps(
+                  nestedPropertyOf<
+                    SaveClientData,
+                    SaveClientRepresentativeData
+                  >("representative", "fullName"),
+                )}
+                readOnly={props.readOnly}
+              />
+
+              <TextInput
+                label="Teléfono del apoderado"
+                {...form.getInputProps(
+                  nestedPropertyOf<
+                    SaveClientData,
+                    SaveClientRepresentativeData
+                  >("representative", "phoneNumber"),
+                )}
+                readOnly={props.readOnly}
+              />
+
+              <TextInput
+                label="Email del apoderado"
+                {...form.getInputProps(
+                  nestedPropertyOf<
+                    SaveClientData,
+                    SaveClientRepresentativeData
+                  >("representative", "email"),
+                )}
+                readOnly={props.readOnly}
+              />
+
+              <TextInput
+                label="Dirección del apoderado"
+                {...form.getInputProps(
+                  nestedPropertyOf<
+                    SaveClientData,
+                    SaveClientRepresentativeData
+                  >("representative", "address"),
+                )}
+                readOnly={props.readOnly}
+              />
+            </>
+          )}
         </>
       )}
     </CrudForm>

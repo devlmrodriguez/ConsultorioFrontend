@@ -1,22 +1,31 @@
 import { z } from "../../utils/es-zod";
 import { idDocumentTypeSchema } from "../common/id-document-type";
+import {
+  readClientRepresentativeDataSchema,
+  saveClientRepresentativeDataSchema,
+} from "./client-representative-data";
 
-export const clientDataSchema = z.object({
-  id: z.number().positive().optional(),
-  firstName: z.string(),
-  middleName: z.string().optional(),
-  lastName: z.string(),
+export const saveClientDataSchema = z.object({
+  firstName: z.string().nonempty(),
+  middleName: z.string().nonempty().optional().nullable(),
+  lastName: z.string().nonempty(),
   dateOfBirth: z.coerce.date(),
-  phoneNumber: z.string().optional(),
-  email: z.string().email().optional(),
-  idDocumentType: idDocumentTypeSchema.optional(),
-  idDocument: z.string().optional(),
-  sex: z.string(),
-  occupation: z.string().optional(),
-  address: z.string(),
-  howDidYouLearnAboutUs: z.string().optional(),
-  hasRepresentative: z.boolean().optional(),
-  isPatient: z.boolean().optional(),
+  phoneNumber: z.string().nonempty().optional().nullable(),
+  email: z.string().nonempty().email().optional().nullable(),
+  idDocumentType: idDocumentTypeSchema.optional().nullable(),
+  idDocument: z.string().nonempty().optional().nullable(),
+  sex: z.string().nonempty(),
+  occupation: z.string().nonempty().optional().nullable(),
+  address: z.string().nonempty(),
+  howDidYouLearnAboutUs: z.string().nonempty().optional().nullable(),
+  representative: saveClientRepresentativeDataSchema.optional().nullable(),
+  isPatient: z.boolean().optional().nullable(),
 });
 
-export type ClientData = z.infer<typeof clientDataSchema>;
+export const readClientDataSchema = saveClientDataSchema.extend({
+  id: z.coerce.string().nonempty().uuid(),
+  representative: readClientRepresentativeDataSchema.optional().nullable(),
+});
+
+export type SaveClientData = z.infer<typeof saveClientDataSchema>;
+export type ReadClientData = z.infer<typeof readClientDataSchema>;

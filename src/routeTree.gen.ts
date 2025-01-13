@@ -8,162 +8,308 @@
 // You should NOT make any changes in this file as it will be overwritten.
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
-import { createFileRoute } from '@tanstack/react-router'
+import { createFileRoute } from "@tanstack/react-router";
 
 // Import Routes
 
-import { Route as rootRoute } from './routes/__root'
-import { Route as LoginImport } from './routes/login'
-import { Route as AuthenticatedImport } from './routes/_authenticated'
-import { Route as IndexImport } from './routes/index'
-import { Route as AuthenticatedDashboardLayoutImport } from './routes/_authenticated/dashboard/_layout'
-import { Route as AuthenticatedDashboardLayoutIndexImport } from './routes/_authenticated/dashboard/_layout/index'
-import { Route as AuthenticatedDashboardLayoutClientesIndexImport } from './routes/_authenticated/dashboard/_layout/clientes/index'
-import { Route as AuthenticatedDashboardLayoutClientesNuevoImport } from './routes/_authenticated/dashboard/_layout/clientes/nuevo'
-import { Route as AuthenticatedDashboardLayoutClientesClientIdImport } from './routes/_authenticated/dashboard/_layout/clientes/$clientId'
+import { Route as rootRoute } from "./routes/__root";
+import { Route as LoginImport } from "./routes/login";
+import { Route as AuthenticatedImport } from "./routes/_authenticated";
+import { Route as IndexImport } from "./routes/index";
+import { Route as AuthenticatedDashboardLayoutImport } from "./routes/_authenticated/dashboard/_layout";
+import { Route as AuthenticatedDashboardLayoutIndexImport } from "./routes/_authenticated/dashboard/_layout/index";
+import { Route as AuthenticatedDashboardLayoutLeadsIndexImport } from "./routes/_authenticated/dashboard/_layout/leads/index";
+import { Route as AuthenticatedDashboardLayoutClientesIndexImport } from "./routes/_authenticated/dashboard/_layout/clientes/index";
+import { Route as AuthenticatedDashboardLayoutLeadsNuevoImport } from "./routes/_authenticated/dashboard/_layout/leads/nuevo";
+import { Route as AuthenticatedDashboardLayoutLeadsLeadIdImport } from "./routes/_authenticated/dashboard/_layout/leads/$leadId";
+import { Route as AuthenticatedDashboardLayoutClientesNuevoImport } from "./routes/_authenticated/dashboard/_layout/clientes/nuevo";
+import { Route as AuthenticatedDashboardLayoutClientesClientIdImport } from "./routes/_authenticated/dashboard/_layout/clientes/$clientId";
+import { Route as AuthenticatedDashboardLayoutPodologiaRazonesIndexImport } from "./routes/_authenticated/dashboard/_layout/podologia/razones/index";
+import { Route as AuthenticatedDashboardLayoutPodologiaPrecondicionesIndexImport } from "./routes/_authenticated/dashboard/_layout/podologia/precondiciones/index";
+import { Route as AuthenticatedDashboardLayoutPodologiaRazonesNuevoImport } from "./routes/_authenticated/dashboard/_layout/podologia/razones/nuevo";
+import { Route as AuthenticatedDashboardLayoutPodologiaRazonesPodiatryReasonIdImport } from "./routes/_authenticated/dashboard/_layout/podologia/razones/$podiatryReasonId";
+import { Route as AuthenticatedDashboardLayoutPodologiaPrecondicionesNuevoImport } from "./routes/_authenticated/dashboard/_layout/podologia/precondiciones/nuevo";
+import { Route as AuthenticatedDashboardLayoutPodologiaPrecondicionesPodiatryPreconditionIdImport } from "./routes/_authenticated/dashboard/_layout/podologia/precondiciones/$podiatryPreconditionId";
 
 // Create Virtual Routes
 
 const AuthenticatedDashboardImport = createFileRoute(
-  '/_authenticated/dashboard',
-)()
+  "/_authenticated/dashboard",
+)();
 
 // Create/Update Routes
 
 const LoginRoute = LoginImport.update({
-  id: '/login',
-  path: '/login',
+  id: "/login",
+  path: "/login",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const AuthenticatedRoute = AuthenticatedImport.update({
-  id: '/_authenticated',
+  id: "/_authenticated",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const IndexRoute = IndexImport.update({
-  id: '/',
-  path: '/',
+  id: "/",
+  path: "/",
   getParentRoute: () => rootRoute,
-} as any)
+} as any);
 
 const AuthenticatedDashboardRoute = AuthenticatedDashboardImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
+  id: "/dashboard",
+  path: "/dashboard",
   getParentRoute: () => AuthenticatedRoute,
-} as any)
+} as any);
 
 const AuthenticatedDashboardLayoutRoute =
   AuthenticatedDashboardLayoutImport.update({
-    id: '/_layout',
+    id: "/_layout",
     getParentRoute: () => AuthenticatedDashboardRoute,
-  } as any)
+  } as any);
 
 const AuthenticatedDashboardLayoutIndexRoute =
   AuthenticatedDashboardLayoutIndexImport.update({
-    id: '/',
-    path: '/',
+    id: "/",
+    path: "/",
     getParentRoute: () => AuthenticatedDashboardLayoutRoute,
-  } as any)
+  } as any);
+
+const AuthenticatedDashboardLayoutLeadsIndexRoute =
+  AuthenticatedDashboardLayoutLeadsIndexImport.update({
+    id: "/leads/",
+    path: "/leads/",
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+  } as any);
 
 const AuthenticatedDashboardLayoutClientesIndexRoute =
   AuthenticatedDashboardLayoutClientesIndexImport.update({
-    id: '/clientes/',
-    path: '/clientes/',
+    id: "/clientes/",
+    path: "/clientes/",
     getParentRoute: () => AuthenticatedDashboardLayoutRoute,
-  } as any)
+  } as any);
+
+const AuthenticatedDashboardLayoutLeadsNuevoRoute =
+  AuthenticatedDashboardLayoutLeadsNuevoImport.update({
+    id: "/leads/nuevo",
+    path: "/leads/nuevo",
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+  } as any);
+
+const AuthenticatedDashboardLayoutLeadsLeadIdRoute =
+  AuthenticatedDashboardLayoutLeadsLeadIdImport.update({
+    id: "/leads/$leadId",
+    path: "/leads/$leadId",
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+  } as any);
 
 const AuthenticatedDashboardLayoutClientesNuevoRoute =
   AuthenticatedDashboardLayoutClientesNuevoImport.update({
-    id: '/clientes/nuevo',
-    path: '/clientes/nuevo',
+    id: "/clientes/nuevo",
+    path: "/clientes/nuevo",
     getParentRoute: () => AuthenticatedDashboardLayoutRoute,
-  } as any)
+  } as any);
 
 const AuthenticatedDashboardLayoutClientesClientIdRoute =
   AuthenticatedDashboardLayoutClientesClientIdImport.update({
-    id: '/clientes/$clientId',
-    path: '/clientes/$clientId',
+    id: "/clientes/$clientId",
+    path: "/clientes/$clientId",
     getParentRoute: () => AuthenticatedDashboardLayoutRoute,
-  } as any)
+  } as any);
+
+const AuthenticatedDashboardLayoutPodologiaRazonesIndexRoute =
+  AuthenticatedDashboardLayoutPodologiaRazonesIndexImport.update({
+    id: "/podologia/razones/",
+    path: "/podologia/razones/",
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+  } as any);
+
+const AuthenticatedDashboardLayoutPodologiaPrecondicionesIndexRoute =
+  AuthenticatedDashboardLayoutPodologiaPrecondicionesIndexImport.update({
+    id: "/podologia/precondiciones/",
+    path: "/podologia/precondiciones/",
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+  } as any);
+
+const AuthenticatedDashboardLayoutPodologiaRazonesNuevoRoute =
+  AuthenticatedDashboardLayoutPodologiaRazonesNuevoImport.update({
+    id: "/podologia/razones/nuevo",
+    path: "/podologia/razones/nuevo",
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+  } as any);
+
+const AuthenticatedDashboardLayoutPodologiaRazonesPodiatryReasonIdRoute =
+  AuthenticatedDashboardLayoutPodologiaRazonesPodiatryReasonIdImport.update({
+    id: "/podologia/razones/$podiatryReasonId",
+    path: "/podologia/razones/$podiatryReasonId",
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+  } as any);
+
+const AuthenticatedDashboardLayoutPodologiaPrecondicionesNuevoRoute =
+  AuthenticatedDashboardLayoutPodologiaPrecondicionesNuevoImport.update({
+    id: "/podologia/precondiciones/nuevo",
+    path: "/podologia/precondiciones/nuevo",
+    getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+  } as any);
+
+const AuthenticatedDashboardLayoutPodologiaPrecondicionesPodiatryPreconditionIdRoute =
+  AuthenticatedDashboardLayoutPodologiaPrecondicionesPodiatryPreconditionIdImport.update(
+    {
+      id: "/podologia/precondiciones/$podiatryPreconditionId",
+      path: "/podologia/precondiciones/$podiatryPreconditionId",
+      getParentRoute: () => AuthenticatedDashboardLayoutRoute,
+    } as any,
+  );
 
 // Populate the FileRoutesByPath interface
 
-declare module '@tanstack/react-router' {
+declare module "@tanstack/react-router" {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexImport
-      parentRoute: typeof rootRoute
-    }
-    '/_authenticated': {
-      id: '/_authenticated'
-      path: ''
-      fullPath: ''
-      preLoaderRoute: typeof AuthenticatedImport
-      parentRoute: typeof rootRoute
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginImport
-      parentRoute: typeof rootRoute
-    }
-    '/_authenticated/dashboard': {
-      id: '/_authenticated/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardImport
-      parentRoute: typeof AuthenticatedImport
-    }
-    '/_authenticated/dashboard/_layout': {
-      id: '/_authenticated/dashboard/_layout'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof AuthenticatedDashboardLayoutImport
-      parentRoute: typeof AuthenticatedDashboardRoute
-    }
-    '/_authenticated/dashboard/_layout/': {
-      id: '/_authenticated/dashboard/_layout/'
-      path: '/'
-      fullPath: '/dashboard/'
-      preLoaderRoute: typeof AuthenticatedDashboardLayoutIndexImport
-      parentRoute: typeof AuthenticatedDashboardLayoutImport
-    }
-    '/_authenticated/dashboard/_layout/clientes/$clientId': {
-      id: '/_authenticated/dashboard/_layout/clientes/$clientId'
-      path: '/clientes/$clientId'
-      fullPath: '/dashboard/clientes/$clientId'
-      preLoaderRoute: typeof AuthenticatedDashboardLayoutClientesClientIdImport
-      parentRoute: typeof AuthenticatedDashboardLayoutImport
-    }
-    '/_authenticated/dashboard/_layout/clientes/nuevo': {
-      id: '/_authenticated/dashboard/_layout/clientes/nuevo'
-      path: '/clientes/nuevo'
-      fullPath: '/dashboard/clientes/nuevo'
-      preLoaderRoute: typeof AuthenticatedDashboardLayoutClientesNuevoImport
-      parentRoute: typeof AuthenticatedDashboardLayoutImport
-    }
-    '/_authenticated/dashboard/_layout/clientes/': {
-      id: '/_authenticated/dashboard/_layout/clientes/'
-      path: '/clientes'
-      fullPath: '/dashboard/clientes'
-      preLoaderRoute: typeof AuthenticatedDashboardLayoutClientesIndexImport
-      parentRoute: typeof AuthenticatedDashboardLayoutImport
-    }
+    "/": {
+      id: "/";
+      path: "/";
+      fullPath: "/";
+      preLoaderRoute: typeof IndexImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_authenticated": {
+      id: "/_authenticated";
+      path: "";
+      fullPath: "";
+      preLoaderRoute: typeof AuthenticatedImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/login": {
+      id: "/login";
+      path: "/login";
+      fullPath: "/login";
+      preLoaderRoute: typeof LoginImport;
+      parentRoute: typeof rootRoute;
+    };
+    "/_authenticated/dashboard": {
+      id: "/_authenticated/dashboard";
+      path: "/dashboard";
+      fullPath: "/dashboard";
+      preLoaderRoute: typeof AuthenticatedDashboardImport;
+      parentRoute: typeof AuthenticatedImport;
+    };
+    "/_authenticated/dashboard/_layout": {
+      id: "/_authenticated/dashboard/_layout";
+      path: "/dashboard";
+      fullPath: "/dashboard";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutImport;
+      parentRoute: typeof AuthenticatedDashboardRoute;
+    };
+    "/_authenticated/dashboard/_layout/": {
+      id: "/_authenticated/dashboard/_layout/";
+      path: "/";
+      fullPath: "/dashboard/";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutIndexImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/clientes/$clientId": {
+      id: "/_authenticated/dashboard/_layout/clientes/$clientId";
+      path: "/clientes/$clientId";
+      fullPath: "/dashboard/clientes/$clientId";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutClientesClientIdImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/clientes/nuevo": {
+      id: "/_authenticated/dashboard/_layout/clientes/nuevo";
+      path: "/clientes/nuevo";
+      fullPath: "/dashboard/clientes/nuevo";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutClientesNuevoImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/leads/$leadId": {
+      id: "/_authenticated/dashboard/_layout/leads/$leadId";
+      path: "/leads/$leadId";
+      fullPath: "/dashboard/leads/$leadId";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutLeadsLeadIdImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/leads/nuevo": {
+      id: "/_authenticated/dashboard/_layout/leads/nuevo";
+      path: "/leads/nuevo";
+      fullPath: "/dashboard/leads/nuevo";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutLeadsNuevoImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/clientes/": {
+      id: "/_authenticated/dashboard/_layout/clientes/";
+      path: "/clientes";
+      fullPath: "/dashboard/clientes";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutClientesIndexImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/leads/": {
+      id: "/_authenticated/dashboard/_layout/leads/";
+      path: "/leads";
+      fullPath: "/dashboard/leads";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutLeadsIndexImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/podologia/precondiciones/$podiatryPreconditionId": {
+      id: "/_authenticated/dashboard/_layout/podologia/precondiciones/$podiatryPreconditionId";
+      path: "/podologia/precondiciones/$podiatryPreconditionId";
+      fullPath: "/dashboard/podologia/precondiciones/$podiatryPreconditionId";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesPodiatryPreconditionIdImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/podologia/precondiciones/nuevo": {
+      id: "/_authenticated/dashboard/_layout/podologia/precondiciones/nuevo";
+      path: "/podologia/precondiciones/nuevo";
+      fullPath: "/dashboard/podologia/precondiciones/nuevo";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesNuevoImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/podologia/razones/$podiatryReasonId": {
+      id: "/_authenticated/dashboard/_layout/podologia/razones/$podiatryReasonId";
+      path: "/podologia/razones/$podiatryReasonId";
+      fullPath: "/dashboard/podologia/razones/$podiatryReasonId";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutPodologiaRazonesPodiatryReasonIdImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/podologia/razones/nuevo": {
+      id: "/_authenticated/dashboard/_layout/podologia/razones/nuevo";
+      path: "/podologia/razones/nuevo";
+      fullPath: "/dashboard/podologia/razones/nuevo";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutPodologiaRazonesNuevoImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/podologia/precondiciones/": {
+      id: "/_authenticated/dashboard/_layout/podologia/precondiciones/";
+      path: "/podologia/precondiciones";
+      fullPath: "/dashboard/podologia/precondiciones";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesIndexImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
+    "/_authenticated/dashboard/_layout/podologia/razones/": {
+      id: "/_authenticated/dashboard/_layout/podologia/razones/";
+      path: "/podologia/razones";
+      fullPath: "/dashboard/podologia/razones";
+      preLoaderRoute: typeof AuthenticatedDashboardLayoutPodologiaRazonesIndexImport;
+      parentRoute: typeof AuthenticatedDashboardLayoutImport;
+    };
   }
 }
 
 // Create and export the route tree
 
 interface AuthenticatedDashboardLayoutRouteChildren {
-  AuthenticatedDashboardLayoutIndexRoute: typeof AuthenticatedDashboardLayoutIndexRoute
-  AuthenticatedDashboardLayoutClientesClientIdRoute: typeof AuthenticatedDashboardLayoutClientesClientIdRoute
-  AuthenticatedDashboardLayoutClientesNuevoRoute: typeof AuthenticatedDashboardLayoutClientesNuevoRoute
-  AuthenticatedDashboardLayoutClientesIndexRoute: typeof AuthenticatedDashboardLayoutClientesIndexRoute
+  AuthenticatedDashboardLayoutIndexRoute: typeof AuthenticatedDashboardLayoutIndexRoute;
+  AuthenticatedDashboardLayoutClientesClientIdRoute: typeof AuthenticatedDashboardLayoutClientesClientIdRoute;
+  AuthenticatedDashboardLayoutClientesNuevoRoute: typeof AuthenticatedDashboardLayoutClientesNuevoRoute;
+  AuthenticatedDashboardLayoutLeadsLeadIdRoute: typeof AuthenticatedDashboardLayoutLeadsLeadIdRoute;
+  AuthenticatedDashboardLayoutLeadsNuevoRoute: typeof AuthenticatedDashboardLayoutLeadsNuevoRoute;
+  AuthenticatedDashboardLayoutClientesIndexRoute: typeof AuthenticatedDashboardLayoutClientesIndexRoute;
+  AuthenticatedDashboardLayoutLeadsIndexRoute: typeof AuthenticatedDashboardLayoutLeadsIndexRoute;
+  AuthenticatedDashboardLayoutPodologiaPrecondicionesPodiatryPreconditionIdRoute: typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesPodiatryPreconditionIdRoute;
+  AuthenticatedDashboardLayoutPodologiaPrecondicionesNuevoRoute: typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesNuevoRoute;
+  AuthenticatedDashboardLayoutPodologiaRazonesPodiatryReasonIdRoute: typeof AuthenticatedDashboardLayoutPodologiaRazonesPodiatryReasonIdRoute;
+  AuthenticatedDashboardLayoutPodologiaRazonesNuevoRoute: typeof AuthenticatedDashboardLayoutPodologiaRazonesNuevoRoute;
+  AuthenticatedDashboardLayoutPodologiaPrecondicionesIndexRoute: typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesIndexRoute;
+  AuthenticatedDashboardLayoutPodologiaRazonesIndexRoute: typeof AuthenticatedDashboardLayoutPodologiaRazonesIndexRoute;
 }
 
 const AuthenticatedDashboardLayoutRouteChildren: AuthenticatedDashboardLayoutRouteChildren =
@@ -174,125 +320,197 @@ const AuthenticatedDashboardLayoutRouteChildren: AuthenticatedDashboardLayoutRou
       AuthenticatedDashboardLayoutClientesClientIdRoute,
     AuthenticatedDashboardLayoutClientesNuevoRoute:
       AuthenticatedDashboardLayoutClientesNuevoRoute,
+    AuthenticatedDashboardLayoutLeadsLeadIdRoute:
+      AuthenticatedDashboardLayoutLeadsLeadIdRoute,
+    AuthenticatedDashboardLayoutLeadsNuevoRoute:
+      AuthenticatedDashboardLayoutLeadsNuevoRoute,
     AuthenticatedDashboardLayoutClientesIndexRoute:
       AuthenticatedDashboardLayoutClientesIndexRoute,
-  }
+    AuthenticatedDashboardLayoutLeadsIndexRoute:
+      AuthenticatedDashboardLayoutLeadsIndexRoute,
+    AuthenticatedDashboardLayoutPodologiaPrecondicionesPodiatryPreconditionIdRoute:
+      AuthenticatedDashboardLayoutPodologiaPrecondicionesPodiatryPreconditionIdRoute,
+    AuthenticatedDashboardLayoutPodologiaPrecondicionesNuevoRoute:
+      AuthenticatedDashboardLayoutPodologiaPrecondicionesNuevoRoute,
+    AuthenticatedDashboardLayoutPodologiaRazonesPodiatryReasonIdRoute:
+      AuthenticatedDashboardLayoutPodologiaRazonesPodiatryReasonIdRoute,
+    AuthenticatedDashboardLayoutPodologiaRazonesNuevoRoute:
+      AuthenticatedDashboardLayoutPodologiaRazonesNuevoRoute,
+    AuthenticatedDashboardLayoutPodologiaPrecondicionesIndexRoute:
+      AuthenticatedDashboardLayoutPodologiaPrecondicionesIndexRoute,
+    AuthenticatedDashboardLayoutPodologiaRazonesIndexRoute:
+      AuthenticatedDashboardLayoutPodologiaRazonesIndexRoute,
+  };
 
 const AuthenticatedDashboardLayoutRouteWithChildren =
   AuthenticatedDashboardLayoutRoute._addFileChildren(
     AuthenticatedDashboardLayoutRouteChildren,
-  )
+  );
 
 interface AuthenticatedDashboardRouteChildren {
-  AuthenticatedDashboardLayoutRoute: typeof AuthenticatedDashboardLayoutRouteWithChildren
+  AuthenticatedDashboardLayoutRoute: typeof AuthenticatedDashboardLayoutRouteWithChildren;
 }
 
 const AuthenticatedDashboardRouteChildren: AuthenticatedDashboardRouteChildren =
   {
     AuthenticatedDashboardLayoutRoute:
       AuthenticatedDashboardLayoutRouteWithChildren,
-  }
+  };
 
 const AuthenticatedDashboardRouteWithChildren =
   AuthenticatedDashboardRoute._addFileChildren(
     AuthenticatedDashboardRouteChildren,
-  )
+  );
 
 interface AuthenticatedRouteChildren {
-  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren
+  AuthenticatedDashboardRoute: typeof AuthenticatedDashboardRouteWithChildren;
 }
 
 const AuthenticatedRouteChildren: AuthenticatedRouteChildren = {
   AuthenticatedDashboardRoute: AuthenticatedDashboardRouteWithChildren,
-}
+};
 
 const AuthenticatedRouteWithChildren = AuthenticatedRoute._addFileChildren(
   AuthenticatedRouteChildren,
-)
+);
 
 export interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteWithChildren
-  '/login': typeof LoginRoute
-  '/dashboard': typeof AuthenticatedDashboardLayoutRouteWithChildren
-  '/dashboard/': typeof AuthenticatedDashboardLayoutIndexRoute
-  '/dashboard/clientes/$clientId': typeof AuthenticatedDashboardLayoutClientesClientIdRoute
-  '/dashboard/clientes/nuevo': typeof AuthenticatedDashboardLayoutClientesNuevoRoute
-  '/dashboard/clientes': typeof AuthenticatedDashboardLayoutClientesIndexRoute
+  "/": typeof IndexRoute;
+  "": typeof AuthenticatedRouteWithChildren;
+  "/login": typeof LoginRoute;
+  "/dashboard": typeof AuthenticatedDashboardLayoutRouteWithChildren;
+  "/dashboard/": typeof AuthenticatedDashboardLayoutIndexRoute;
+  "/dashboard/clientes/$clientId": typeof AuthenticatedDashboardLayoutClientesClientIdRoute;
+  "/dashboard/clientes/nuevo": typeof AuthenticatedDashboardLayoutClientesNuevoRoute;
+  "/dashboard/leads/$leadId": typeof AuthenticatedDashboardLayoutLeadsLeadIdRoute;
+  "/dashboard/leads/nuevo": typeof AuthenticatedDashboardLayoutLeadsNuevoRoute;
+  "/dashboard/clientes": typeof AuthenticatedDashboardLayoutClientesIndexRoute;
+  "/dashboard/leads": typeof AuthenticatedDashboardLayoutLeadsIndexRoute;
+  "/dashboard/podologia/precondiciones/$podiatryPreconditionId": typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesPodiatryPreconditionIdRoute;
+  "/dashboard/podologia/precondiciones/nuevo": typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesNuevoRoute;
+  "/dashboard/podologia/razones/$podiatryReasonId": typeof AuthenticatedDashboardLayoutPodologiaRazonesPodiatryReasonIdRoute;
+  "/dashboard/podologia/razones/nuevo": typeof AuthenticatedDashboardLayoutPodologiaRazonesNuevoRoute;
+  "/dashboard/podologia/precondiciones": typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesIndexRoute;
+  "/dashboard/podologia/razones": typeof AuthenticatedDashboardLayoutPodologiaRazonesIndexRoute;
 }
 
 export interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof AuthenticatedRouteWithChildren
-  '/login': typeof LoginRoute
-  '/dashboard': typeof AuthenticatedDashboardLayoutIndexRoute
-  '/dashboard/clientes/$clientId': typeof AuthenticatedDashboardLayoutClientesClientIdRoute
-  '/dashboard/clientes/nuevo': typeof AuthenticatedDashboardLayoutClientesNuevoRoute
-  '/dashboard/clientes': typeof AuthenticatedDashboardLayoutClientesIndexRoute
+  "/": typeof IndexRoute;
+  "": typeof AuthenticatedRouteWithChildren;
+  "/login": typeof LoginRoute;
+  "/dashboard": typeof AuthenticatedDashboardLayoutIndexRoute;
+  "/dashboard/clientes/$clientId": typeof AuthenticatedDashboardLayoutClientesClientIdRoute;
+  "/dashboard/clientes/nuevo": typeof AuthenticatedDashboardLayoutClientesNuevoRoute;
+  "/dashboard/leads/$leadId": typeof AuthenticatedDashboardLayoutLeadsLeadIdRoute;
+  "/dashboard/leads/nuevo": typeof AuthenticatedDashboardLayoutLeadsNuevoRoute;
+  "/dashboard/clientes": typeof AuthenticatedDashboardLayoutClientesIndexRoute;
+  "/dashboard/leads": typeof AuthenticatedDashboardLayoutLeadsIndexRoute;
+  "/dashboard/podologia/precondiciones/$podiatryPreconditionId": typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesPodiatryPreconditionIdRoute;
+  "/dashboard/podologia/precondiciones/nuevo": typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesNuevoRoute;
+  "/dashboard/podologia/razones/$podiatryReasonId": typeof AuthenticatedDashboardLayoutPodologiaRazonesPodiatryReasonIdRoute;
+  "/dashboard/podologia/razones/nuevo": typeof AuthenticatedDashboardLayoutPodologiaRazonesNuevoRoute;
+  "/dashboard/podologia/precondiciones": typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesIndexRoute;
+  "/dashboard/podologia/razones": typeof AuthenticatedDashboardLayoutPodologiaRazonesIndexRoute;
 }
 
 export interface FileRoutesById {
-  __root__: typeof rootRoute
-  '/': typeof IndexRoute
-  '/_authenticated': typeof AuthenticatedRouteWithChildren
-  '/login': typeof LoginRoute
-  '/_authenticated/dashboard': typeof AuthenticatedDashboardRouteWithChildren
-  '/_authenticated/dashboard/_layout': typeof AuthenticatedDashboardLayoutRouteWithChildren
-  '/_authenticated/dashboard/_layout/': typeof AuthenticatedDashboardLayoutIndexRoute
-  '/_authenticated/dashboard/_layout/clientes/$clientId': typeof AuthenticatedDashboardLayoutClientesClientIdRoute
-  '/_authenticated/dashboard/_layout/clientes/nuevo': typeof AuthenticatedDashboardLayoutClientesNuevoRoute
-  '/_authenticated/dashboard/_layout/clientes/': typeof AuthenticatedDashboardLayoutClientesIndexRoute
+  __root__: typeof rootRoute;
+  "/": typeof IndexRoute;
+  "/_authenticated": typeof AuthenticatedRouteWithChildren;
+  "/login": typeof LoginRoute;
+  "/_authenticated/dashboard": typeof AuthenticatedDashboardRouteWithChildren;
+  "/_authenticated/dashboard/_layout": typeof AuthenticatedDashboardLayoutRouteWithChildren;
+  "/_authenticated/dashboard/_layout/": typeof AuthenticatedDashboardLayoutIndexRoute;
+  "/_authenticated/dashboard/_layout/clientes/$clientId": typeof AuthenticatedDashboardLayoutClientesClientIdRoute;
+  "/_authenticated/dashboard/_layout/clientes/nuevo": typeof AuthenticatedDashboardLayoutClientesNuevoRoute;
+  "/_authenticated/dashboard/_layout/leads/$leadId": typeof AuthenticatedDashboardLayoutLeadsLeadIdRoute;
+  "/_authenticated/dashboard/_layout/leads/nuevo": typeof AuthenticatedDashboardLayoutLeadsNuevoRoute;
+  "/_authenticated/dashboard/_layout/clientes/": typeof AuthenticatedDashboardLayoutClientesIndexRoute;
+  "/_authenticated/dashboard/_layout/leads/": typeof AuthenticatedDashboardLayoutLeadsIndexRoute;
+  "/_authenticated/dashboard/_layout/podologia/precondiciones/$podiatryPreconditionId": typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesPodiatryPreconditionIdRoute;
+  "/_authenticated/dashboard/_layout/podologia/precondiciones/nuevo": typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesNuevoRoute;
+  "/_authenticated/dashboard/_layout/podologia/razones/$podiatryReasonId": typeof AuthenticatedDashboardLayoutPodologiaRazonesPodiatryReasonIdRoute;
+  "/_authenticated/dashboard/_layout/podologia/razones/nuevo": typeof AuthenticatedDashboardLayoutPodologiaRazonesNuevoRoute;
+  "/_authenticated/dashboard/_layout/podologia/precondiciones/": typeof AuthenticatedDashboardLayoutPodologiaPrecondicionesIndexRoute;
+  "/_authenticated/dashboard/_layout/podologia/razones/": typeof AuthenticatedDashboardLayoutPodologiaRazonesIndexRoute;
 }
 
 export interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
+  fileRoutesByFullPath: FileRoutesByFullPath;
   fullPaths:
-    | '/'
-    | ''
-    | '/login'
-    | '/dashboard'
-    | '/dashboard/'
-    | '/dashboard/clientes/$clientId'
-    | '/dashboard/clientes/nuevo'
-    | '/dashboard/clientes'
-  fileRoutesByTo: FileRoutesByTo
+    | "/"
+    | ""
+    | "/login"
+    | "/dashboard"
+    | "/dashboard/"
+    | "/dashboard/clientes/$clientId"
+    | "/dashboard/clientes/nuevo"
+    | "/dashboard/leads/$leadId"
+    | "/dashboard/leads/nuevo"
+    | "/dashboard/clientes"
+    | "/dashboard/leads"
+    | "/dashboard/podologia/precondiciones/$podiatryPreconditionId"
+    | "/dashboard/podologia/precondiciones/nuevo"
+    | "/dashboard/podologia/razones/$podiatryReasonId"
+    | "/dashboard/podologia/razones/nuevo"
+    | "/dashboard/podologia/precondiciones"
+    | "/dashboard/podologia/razones";
+  fileRoutesByTo: FileRoutesByTo;
   to:
-    | '/'
-    | ''
-    | '/login'
-    | '/dashboard'
-    | '/dashboard/clientes/$clientId'
-    | '/dashboard/clientes/nuevo'
-    | '/dashboard/clientes'
+    | "/"
+    | ""
+    | "/login"
+    | "/dashboard"
+    | "/dashboard/clientes/$clientId"
+    | "/dashboard/clientes/nuevo"
+    | "/dashboard/leads/$leadId"
+    | "/dashboard/leads/nuevo"
+    | "/dashboard/clientes"
+    | "/dashboard/leads"
+    | "/dashboard/podologia/precondiciones/$podiatryPreconditionId"
+    | "/dashboard/podologia/precondiciones/nuevo"
+    | "/dashboard/podologia/razones/$podiatryReasonId"
+    | "/dashboard/podologia/razones/nuevo"
+    | "/dashboard/podologia/precondiciones"
+    | "/dashboard/podologia/razones";
   id:
-    | '__root__'
-    | '/'
-    | '/_authenticated'
-    | '/login'
-    | '/_authenticated/dashboard'
-    | '/_authenticated/dashboard/_layout'
-    | '/_authenticated/dashboard/_layout/'
-    | '/_authenticated/dashboard/_layout/clientes/$clientId'
-    | '/_authenticated/dashboard/_layout/clientes/nuevo'
-    | '/_authenticated/dashboard/_layout/clientes/'
-  fileRoutesById: FileRoutesById
+    | "__root__"
+    | "/"
+    | "/_authenticated"
+    | "/login"
+    | "/_authenticated/dashboard"
+    | "/_authenticated/dashboard/_layout"
+    | "/_authenticated/dashboard/_layout/"
+    | "/_authenticated/dashboard/_layout/clientes/$clientId"
+    | "/_authenticated/dashboard/_layout/clientes/nuevo"
+    | "/_authenticated/dashboard/_layout/leads/$leadId"
+    | "/_authenticated/dashboard/_layout/leads/nuevo"
+    | "/_authenticated/dashboard/_layout/clientes/"
+    | "/_authenticated/dashboard/_layout/leads/"
+    | "/_authenticated/dashboard/_layout/podologia/precondiciones/$podiatryPreconditionId"
+    | "/_authenticated/dashboard/_layout/podologia/precondiciones/nuevo"
+    | "/_authenticated/dashboard/_layout/podologia/razones/$podiatryReasonId"
+    | "/_authenticated/dashboard/_layout/podologia/razones/nuevo"
+    | "/_authenticated/dashboard/_layout/podologia/precondiciones/"
+    | "/_authenticated/dashboard/_layout/podologia/razones/";
+  fileRoutesById: FileRoutesById;
 }
 
 export interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren
-  LoginRoute: typeof LoginRoute
+  IndexRoute: typeof IndexRoute;
+  AuthenticatedRoute: typeof AuthenticatedRouteWithChildren;
+  LoginRoute: typeof LoginRoute;
 }
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRoute: AuthenticatedRouteWithChildren,
   LoginRoute: LoginRoute,
-}
+};
 
 export const routeTree = rootRoute
   ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+  ._addFileTypes<FileRouteTypes>();
 
 /* ROUTE_MANIFEST_START
 {
@@ -331,7 +549,16 @@ export const routeTree = rootRoute
         "/_authenticated/dashboard/_layout/",
         "/_authenticated/dashboard/_layout/clientes/$clientId",
         "/_authenticated/dashboard/_layout/clientes/nuevo",
-        "/_authenticated/dashboard/_layout/clientes/"
+        "/_authenticated/dashboard/_layout/leads/$leadId",
+        "/_authenticated/dashboard/_layout/leads/nuevo",
+        "/_authenticated/dashboard/_layout/clientes/",
+        "/_authenticated/dashboard/_layout/leads/",
+        "/_authenticated/dashboard/_layout/podologia/precondiciones/$podiatryPreconditionId",
+        "/_authenticated/dashboard/_layout/podologia/precondiciones/nuevo",
+        "/_authenticated/dashboard/_layout/podologia/razones/$podiatryReasonId",
+        "/_authenticated/dashboard/_layout/podologia/razones/nuevo",
+        "/_authenticated/dashboard/_layout/podologia/precondiciones/",
+        "/_authenticated/dashboard/_layout/podologia/razones/"
       ]
     },
     "/_authenticated/dashboard/_layout/": {
@@ -346,8 +573,44 @@ export const routeTree = rootRoute
       "filePath": "_authenticated/dashboard/_layout/clientes/nuevo.tsx",
       "parent": "/_authenticated/dashboard/_layout"
     },
+    "/_authenticated/dashboard/_layout/leads/$leadId": {
+      "filePath": "_authenticated/dashboard/_layout/leads/$leadId.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
+    "/_authenticated/dashboard/_layout/leads/nuevo": {
+      "filePath": "_authenticated/dashboard/_layout/leads/nuevo.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
     "/_authenticated/dashboard/_layout/clientes/": {
       "filePath": "_authenticated/dashboard/_layout/clientes/index.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
+    "/_authenticated/dashboard/_layout/leads/": {
+      "filePath": "_authenticated/dashboard/_layout/leads/index.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
+    "/_authenticated/dashboard/_layout/podologia/precondiciones/$podiatryPreconditionId": {
+      "filePath": "_authenticated/dashboard/_layout/podologia/precondiciones/$podiatryPreconditionId.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
+    "/_authenticated/dashboard/_layout/podologia/precondiciones/nuevo": {
+      "filePath": "_authenticated/dashboard/_layout/podologia/precondiciones/nuevo.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
+    "/_authenticated/dashboard/_layout/podologia/razones/$podiatryReasonId": {
+      "filePath": "_authenticated/dashboard/_layout/podologia/razones/$podiatryReasonId.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
+    "/_authenticated/dashboard/_layout/podologia/razones/nuevo": {
+      "filePath": "_authenticated/dashboard/_layout/podologia/razones/nuevo.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
+    "/_authenticated/dashboard/_layout/podologia/precondiciones/": {
+      "filePath": "_authenticated/dashboard/_layout/podologia/precondiciones/index.tsx",
+      "parent": "/_authenticated/dashboard/_layout"
+    },
+    "/_authenticated/dashboard/_layout/podologia/razones/": {
+      "filePath": "_authenticated/dashboard/_layout/podologia/razones/index.tsx",
       "parent": "/_authenticated/dashboard/_layout"
     }
   }

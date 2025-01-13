@@ -95,7 +95,6 @@ export function Login() {
             withAsterisk
             size="md"
             data={authTenantsQuery.data?.tenants ?? []}
-            key={form.key("tenantId")}
             {...form.getInputProps("tenantId")}
           />
 
@@ -104,7 +103,6 @@ export function Login() {
             withAsterisk
             mt="md"
             size="md"
-            key={form.key("email")}
             {...form.getInputProps("email")}
           />
 
@@ -113,7 +111,6 @@ export function Login() {
             withAsterisk
             mt="md"
             size="md"
-            key={form.key("password")}
             {...form.getInputProps("password")}
           />
 
@@ -121,11 +118,13 @@ export function Login() {
             <Alert variant="light" color="red" title="Error" mt="xl">
               {authTenantsQuery.error &&
                 formatApiError(authTenantsQuery.error).map((message, index) => (
-                  <Text key={index}>{message}</Text>
+                  <Text key={message + index.toString()}>{message}</Text>
                 ))}
               {authLoginMutation.error &&
                 formatApiError(authLoginMutation.error).map(
-                  (message, index) => <Text key={index}>{message}</Text>,
+                  (message, index) => (
+                    <Text key={message + index.toString()}>{message}</Text>
+                  ),
                 )}
             </Alert>
           )}

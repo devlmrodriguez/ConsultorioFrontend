@@ -13,7 +13,10 @@ import { IconChevronDown, IconLogout, IconSettings } from "@tabler/icons-react";
 import { useState } from "react";
 import { useApiQuery } from "../../../hooks/api-query.hook";
 import { API_ROUTES } from "../../../constants/api-routes";
-import { AccountData } from "../../../models/common/account-data";
+import {
+  AccountData,
+  accountDataSchema,
+} from "../../../models/common/account-data";
 import classes from "./Header.module.css";
 
 interface HeaderProps {
@@ -27,6 +30,10 @@ export function Header(props: HeaderProps) {
   const accountDataQuery = useApiQuery<AccountData>(API_ROUTES.AccountData, [
     "account",
   ]);
+
+  const parsedAccountData = accountDataQuery.data
+    ? accountDataSchema.parse(accountDataQuery.data)
+    : undefined;
 
   return (
     <Group h="100%" px="md" justify="space-between">
@@ -60,22 +67,22 @@ export function Header(props: HeaderProps) {
             })}
           >
             <Group gap={7}>
-              {accountDataQuery.data === undefined ? (
+              {parsedAccountData === undefined ? (
                 <Loader />
               ) : (
                 <>
                   <Avatar
                     src="https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-5.png"
                     alt={
-                      accountDataQuery.data.firstName +
-                      accountDataQuery.data.lastName
+                      parsedAccountData.firstName + parsedAccountData.lastName
                     }
                     radius="xl"
                     size={20}
                   />
                   <Text fw={500} size="sm" lh={1} mr={3}>
-                    {accountDataQuery.data.firstName +
-                      accountDataQuery.data.lastName}
+                    {parsedAccountData.firstName +
+                      " " +
+                      parsedAccountData.lastName}
                   </Text>
                   <IconChevronDown size={12} stroke={1.5} />
                 </>

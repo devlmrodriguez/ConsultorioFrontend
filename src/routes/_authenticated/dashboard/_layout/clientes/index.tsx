@@ -1,11 +1,14 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { ClientsTable } from "../../../../../components/client/ClientsTable";
-import { useClientsQuery } from "../../../../../hooks/clients-query-hook";
 import { Button, Group, Loader, Stack } from "@mantine/core";
-import { useClientDeleteMutation } from "../../../../../hooks/client-mutation.hook";
+import { readClientDataSchema } from "../../../../../models/client/client-data";
+import {
+  useClientDeleteMutation,
+  useClientsQuery,
+} from "../../../../../hooks/client-hooks";
 
 export const Route = createFileRoute(
-  "/_authenticated/dashboard/_layout/clientes/"
+  "/_authenticated/dashboard/_layout/clientes/",
 )({
   component: RouteComponent,
 });
@@ -26,6 +29,10 @@ function RouteComponent() {
     return <Group>{query.error.details.title}</Group>;
   }
 
+  const parsedData = query.data.map((readClientData) =>
+    readClientDataSchema.parse(readClientData),
+  );
+
   return (
     <Stack>
       <Group>
@@ -34,7 +41,7 @@ function RouteComponent() {
         </Button>
       </Group>
       <ClientsTable
-        data={query.data}
+        data={parsedData}
         onDeleteClientClick={onDeleteClientClick}
       />
     </Stack>

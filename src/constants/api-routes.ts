@@ -7,5 +7,8 @@ export const API_ROUTES = {
   AuthLogout: "/Auth/Logout",
   AuthCheck: "/Auth/Check",
   AccountData: "/Account/Data",
+  Leads: "/Leads",
   Clients: "/Clients",
+  PodiatryReasons: "/PodiatryReasons",
+  PodiatryPreconditions: "/PodiatryPreconditions",
 };

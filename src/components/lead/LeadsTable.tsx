@@ -1,42 +1,29 @@
 import { IconPencil, IconTrash } from "@tabler/icons-react";
-import { ActionIcon, Avatar, Group, Table, Text } from "@mantine/core";
-import { ReadClientData } from "../../models/client/client-data";
-import dayjs from "dayjs";
+import { ActionIcon, Group, Table, Text } from "@mantine/core";
+import { ReadLeadData } from "../../models/lead/lead-data";
 import { Link } from "@tanstack/react-router";
+import { LeadStateBadge } from "./LeadStateBadge";
 
-interface ClientsTableProps {
-  data: ReadClientData[];
-  onDeleteClientClick?: (clientId: string) => void;
+interface LeadsTableProps {
+  data: ReadLeadData[];
+  onDeleteLeadClick?: (leadId: string) => void;
 }
 
-export function ClientsTable(props: ClientsTableProps) {
+export function LeadsTable(props: LeadsTableProps) {
   const rows = props.data.map((item) => (
     <Table.Tr key={item.id}>
       <Table.Td>
-        <Group gap="sm">
-          <Avatar
-            size={30}
-            src={
-              "https://raw.githubusercontent.com/mantinedev/mantine/master/.demo/avatars/avatar-1.png"
-            }
-            radius={30}
-          />
-          <Text fz="sm" fw={500}>
-            {item.firstName + " " + item.lastName}
-          </Text>
-        </Group>
+        <Text fz="sm" fw={500}>
+          {item.phoneNumber}
+        </Text>
       </Table.Td>
 
       <Table.Td>
-        <Text fz="sm">{dayjs(item.dateOfBirth).format("DD/MM/YYYY")}</Text>
-      </Table.Td>
-
-      <Table.Td>
-        <Text fz="sm">{item.sex}</Text>
-      </Table.Td>
-
-      <Table.Td>
-        <Text fz="sm">{item.phoneNumber ?? "-"}</Text>
+        <Text fz="sm">
+          {`${item.firstName ?? ""} ${item.lastName ?? ""}`.trim() === ""
+            ? "-"
+            : `${item.firstName ?? ""} ${item.lastName ?? ""}`.trim()}
+        </Text>
       </Table.Td>
 
       <Table.Td>
@@ -44,11 +31,17 @@ export function ClientsTable(props: ClientsTableProps) {
       </Table.Td>
 
       <Table.Td>
+        <Text fz="sm">
+          <LeadStateBadge leadState={item.state} />
+        </Text>
+      </Table.Td>
+
+      <Table.Td>
         <Group gap={0} justify="flex-end">
           <Link
-            to="/dashboard/clientes/$clientId"
+            to="/dashboard/leads/$leadId"
             params={{
-              clientId: item.id,
+              leadId: item.id,
             }}
           >
             <ActionIcon variant="subtle" color="gray">
@@ -59,7 +52,7 @@ export function ClientsTable(props: ClientsTableProps) {
             variant="subtle"
             color="red"
             onClick={() => {
-              props.onDeleteClientClick?.(item.id);
+              props.onDeleteLeadClick?.(item.id);
             }}
           >
             <IconTrash size={16} stroke={1.5} />
@@ -74,11 +67,10 @@ export function ClientsTable(props: ClientsTableProps) {
       <Table verticalSpacing="sm">
         <Table.Thead>
           <Table.Tr>
-            <Table.Th>Cliente</Table.Th>
-            <Table.Th>Fecha de nacimiento</Table.Th>
-            <Table.Th>Sexo</Table.Th>
             <Table.Th>Teléfono</Table.Th>
+            <Table.Th>Nombres</Table.Th>
             <Table.Th>Email</Table.Th>
+            <Table.Th>Estado</Table.Th>
             <Table.Th />
           </Table.Tr>
         </Table.Thead>
