@@ -14,6 +14,7 @@ export interface CrudFormProps<TData extends Record<string, unknown>> {
   onCreateClick?: (data: TData) => void;
   onUpdateClick?: (data: TData) => void;
   onDeleteClick?: (data: TData) => void;
+  initialValues?: Partial<TData>;
 }
 
 // Internal props with schema and children
@@ -32,7 +33,7 @@ export function CrudForm<TData extends Record<string, unknown>>(
 ) {
   const form = useForm<TData>({
     mode: "uncontrolled",
-    initialValues: props.data,
+    initialValues: props.data ?? (props.initialValues as TData),
     validate: zodResolver(props.saveSchema),
   });
 

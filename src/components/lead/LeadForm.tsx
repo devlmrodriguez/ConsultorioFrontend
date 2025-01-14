@@ -14,10 +14,7 @@ import {
 } from "../../models/lead/lead-data";
 import { CrudForm, CrudFormProps } from "../common/CrudForm/CrudForm";
 import { leadSourceValues } from "../../models/common/lead-source";
-import {
-  leadStateNewValue,
-  leadStateValues,
-} from "../../models/common/lead-state";
+import { leadStateValues } from "../../models/common/lead-state";
 import dayjs from "dayjs";
 import { LeadStateBadge } from "./LeadStateBadge";
 
@@ -72,14 +69,8 @@ export function LeadForm(props: CrudFormProps<ReadLeadData>) {
               {...form.getInputProps("notes")}
               readOnly={props.readOnly}
             />
-
-            {props.data === undefined ? (
-              <input
-                type="hidden"
-                {...form.getInputProps("state")}
-                value={leadStateNewValue}
-              />
-            ) : (
+            {/* If data is undefined (Create), state=new will be set as initial value from outside this component */}
+            {props.data !== undefined && (
               <Select
                 label="Estado del lead"
                 withAsterisk

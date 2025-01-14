@@ -31,9 +31,7 @@ export function LeadsTable(props: LeadsTableProps) {
       </Table.Td>
 
       <Table.Td>
-        <Text fz="sm">
-          <LeadStateBadge leadState={item.state} />
-        </Text>
+        <LeadStateBadge leadState={item.state} />
       </Table.Td>
 
       <Table.Td>

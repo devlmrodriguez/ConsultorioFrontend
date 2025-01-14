@@ -10,6 +10,7 @@ import {
 import { LeadForm } from "../../../../../components/lead/LeadForm";
 import { Button, Group, Stack } from "@mantine/core";
 import { useLeadCreateMutation } from "../../../../../hooks/lead-hooks";
+import { leadStateNewValue } from "../../../../../models/common/lead-state";
 
 export const Route = createFileRoute(
   "/_authenticated/dashboard/_layout/leads/nuevo",
@@ -41,7 +42,11 @@ function RouteComponent() {
           Atrás
         </Button>
       </Group>
-      <LeadForm readOnly={false} onCreateClick={onCreateClick} />
+      <LeadForm
+        readOnly={false}
+        onCreateClick={onCreateClick}
+        initialValues={{ state: leadStateNewValue }}
+      />
     </Stack>
   );
 }
