@@ -1,5 +1,6 @@
 import { API_ROUTES } from "../constants/api-routes";
 import {
+  PagedListReadPodiatryReasonData,
   ReadPodiatryReasonData,
   SavePodiatryReasonData,
 } from "../models/podiatry-reason/podiatry-reason-data";
@@ -16,12 +17,17 @@ export const podiatryReasonQueryKey = (podiatryReasonId: string) => [
   podiatryReasonId,
 ];
 
-export const podiatryReasonsQueryKey = ["podiatry-reasons"];
+export const podiatryReasonsQueryKey = (
+  searchTerm?: string,
+  filters?: string,
+  page?: number,
+  pageSize?: number,
+) => ["podiatry-reasons", searchTerm, filters, page, pageSize];
 
 export const usePodiatryReasonCreateMutation = () =>
   useResourceCreateMutation<SavePodiatryReasonData>(
     API_ROUTES.PodiatryReasons,
-    podiatryReasonsQueryKey,
+    podiatryReasonsQueryKey(),
   );
 
 export const usePodiatryReasonUpdateMutation = (podiatryReasonId: string) =>
@@ -29,14 +35,14 @@ export const usePodiatryReasonUpdateMutation = (podiatryReasonId: string) =>
     API_ROUTES.PodiatryReasons,
     podiatryReasonId,
     podiatryReasonQueryKey,
-    podiatryReasonsQueryKey,
+    podiatryReasonsQueryKey(),
   );
 
 export const usePodiatryReasonDeleteMutation = () =>
   useResourceDeleteMutation(
     API_ROUTES.PodiatryReasons,
     podiatryReasonQueryKey,
-    podiatryReasonsQueryKey,
+    podiatryReasonsQueryKey(),
   );
 
 export const usePodiatryReasonQuery = (podiatryReasonId: string) =>
@@ -46,8 +52,17 @@ export const usePodiatryReasonQuery = (podiatryReasonId: string) =>
     podiatryReasonQueryKey,
   );
 
-export const usePodiatryReasonsQuery = () =>
-  useResourcesQuery<ReadPodiatryReasonData>(
+export const usePodiatryReasonsQuery = (
+  searchTerm?: string,
+  filters?: string,
+  page?: number,
+  pageSize?: number,
+) =>
+  useResourcesQuery<PagedListReadPodiatryReasonData>(
     API_ROUTES.PodiatryReasons,
-    podiatryReasonsQueryKey,
+    podiatryReasonsQueryKey(searchTerm, filters, page, pageSize),
+    searchTerm,
+    filters,
+    page,
+    pageSize,
   );

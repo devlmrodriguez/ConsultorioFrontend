@@ -5,7 +5,7 @@ import { axiosRequest } from "../../utils/axios-helpers";
 export function useResourceQuery<TReadResourceData>(
   url: string,
   resourceId: string,
-  resourceQueryKey: (resouceId: string) => string[],
+  resourceQueryKey: (resourceId: string) => string[],
 ) {
   const queryKey = resourceQueryKey(resourceId);
 

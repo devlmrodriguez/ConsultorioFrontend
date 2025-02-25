@@ -29,6 +29,17 @@ axiosInstance.interceptors.request.use(
   },
 );
 
+let isRefreshing = false; // Tracks if a token refresh is in progress
+let refreshSubscribers: ((token: string) => void)[] = []; // Queue for pending requests
+
+// Function to notify all subscribers with the new token
+const onRefreshed = (token: string) => {
+  refreshSubscribers.forEach((callback) => {
+    callback(token);
+  });
+  refreshSubscribers = [];
+};
+
 interface CustomAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
@@ -47,6 +58,16 @@ axiosInstance.interceptors.response.use(
       originalConfig !== undefined &&
       !originalConfig._retry
     ) {
+      if (isRefreshing) {
+        // If a refresh is already in progress, wait for it to complete
+        return new Promise((resolve) => {
+          refreshSubscribers.push((token) => {
+            originalConfig.headers.Authorization = `Bearer ${token}`;
+            resolve(axiosInstance(originalConfig));
+          });
+        });
+      }
+
       const storedCredentials = useCredentialsStore.getState().credentials;
 
       if (storedCredentials === null) {
@@ -54,6 +75,7 @@ axiosInstance.interceptors.response.use(
       }
 
       originalConfig._retry = true;
+      isRefreshing = true;
 
       try {
         const request: AuthRefreshRequest = {
@@ -64,6 +86,7 @@ axiosInstance.interceptors.response.use(
 
         const config: CustomAxiosRequestConfig = {
           ...originalConfig,
+          params: undefined,
           _retry: true,
         };
 
@@ -81,20 +104,30 @@ axiosInstance.interceptors.response.use(
           },
         });
 
+        isRefreshing = false;
+        onRefreshed(response.data.refreshToken);
+
         originalConfig.headers.Authorization = `Bearer ${response.data.accessToken}`;
 
         console.debug("Authentication (JWT) successfully refreshed");
 
         return await axiosInstance(originalConfig);
       } catch (newError) {
-        if (newError instanceof AxiosError) {
-          useCredentialsStore.getState().removeCredentials();
-        }
-
         console.debug("Authentication (JWT) failed to refresh");
 
+        if (newError instanceof AxiosError) {
+          if (useCredentialsStore.getState().credentials !== null) {
+            console.debug(
+              "Removing credentials in axios-setup retry due to refresh failure",
+            );
+            useCredentialsStore.getState().removeCredentials();
+          }
+        }
+
+        isRefreshing = false;
+        refreshSubscribers = [];
+
         // Must return the original error, because other error codes might leak through react query
-        // TODO: attempt redirection to login?
         return Promise.reject(originalError);
       }
     }

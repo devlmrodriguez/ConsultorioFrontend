@@ -12,7 +12,7 @@ import {
   IconTemperature,
   // IconReceipt2,
   // IconSettings,
-  IconUser,
+  // IconUser,
   IconUsers,
 } from "@tabler/icons-react";
 import classes from "./Navbar.module.css";
@@ -106,7 +106,7 @@ export function Navbar(props: NavbarProps) {
       <div className={classes.navbarMain}>{links}</div>
 
       <div className={classes.footer}>
-        <a
+        {/* <a
           href="#"
           className={classes.link}
           onClick={(event) => {
@@ -115,7 +115,7 @@ export function Navbar(props: NavbarProps) {
         >
           <IconUser className={classes.linkIcon} stroke={1.5} />
           <span>Mi cuenta</span>
-        </a>
+        </a> */}
 
         <a
           href="#"

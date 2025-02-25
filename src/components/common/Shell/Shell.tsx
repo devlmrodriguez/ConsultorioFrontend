@@ -66,7 +66,7 @@ export function Shell() {
 
       <AppShell.Main>
         <CatchBoundary getResetKey={() => "reset"}>
-          <Container>
+          <Container size="xl" fluid>
             <Outlet />
           </Container>
         </CatchBoundary>

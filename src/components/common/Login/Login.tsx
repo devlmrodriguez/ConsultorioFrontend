@@ -95,6 +95,7 @@ export function Login() {
             withAsterisk
             size="md"
             data={authTenantsQuery.data?.tenants ?? []}
+            key={form.key("tenantId")}
             {...form.getInputProps("tenantId")}
           />
 
@@ -103,6 +104,7 @@ export function Login() {
             withAsterisk
             mt="md"
             size="md"
+            key={form.key("email")}
             {...form.getInputProps("email")}
           />
 
@@ -111,6 +113,7 @@ export function Login() {
             withAsterisk
             mt="md"
             size="md"
+            key={form.key("password")}
             {...form.getInputProps("password")}
           />
 

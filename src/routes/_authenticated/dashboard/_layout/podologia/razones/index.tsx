@@ -1,6 +1,9 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { Button, Group, Loader, Stack } from "@mantine/core";
-import { readPodiatryReasonDataSchema } from "../../../../../../models/podiatry-reason/podiatry-reason-data";
+import {
+  pagedListReadPodiatryReasonSchema,
+  readPodiatryReasonDataSchema,
+} from "../../../../../../models/podiatry-reason/podiatry-reason-data";
 import { PodiatryReasonsTable } from "../../../../../../components/podiatry-reason/PodiatryReasonsTable";
 import {
   usePodiatryReasonDeleteMutation,
@@ -29,7 +32,9 @@ function RouteComponent() {
     return <Group>{query.error.details.title}</Group>;
   }
 
-  const parsedData = query.data.map((readPodiatryReasonData) =>
+  const parsedData = pagedListReadPodiatryReasonSchema.parse(query.data);
+
+  const parsedDataItems = parsedData.items.map((readPodiatryReasonData) =>
     readPodiatryReasonDataSchema.parse(readPodiatryReasonData),
   );
 
@@ -41,7 +46,7 @@ function RouteComponent() {
         </Button>
       </Group>
       <PodiatryReasonsTable
-        data={parsedData}
+        data={parsedDataItems}
         onDeletePodiatryReasonClick={onDeletePodiatryReasonClick}
       />
     </Stack>

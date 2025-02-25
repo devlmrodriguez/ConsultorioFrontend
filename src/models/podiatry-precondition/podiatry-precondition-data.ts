@@ -1,4 +1,5 @@
 import { z } from "../../utils/es-zod";
+import { createPagedListSchema } from "../common/paged-list";
 
 export const savePodiatryPreconditionDataSchema = z.object({
   name: z.string().nonempty(),
@@ -15,4 +16,11 @@ export type SavePodiatryPreconditionData = z.infer<
 >;
 export type ReadPodiatryPreconditionData = z.infer<
   typeof readPodiatryPreconditionDataSchema
+>;
+
+export const pagedListReadPodiatryPreconditionSchema = createPagedListSchema(
+  readPodiatryPreconditionDataSchema,
+);
+export type PagedListReadPodiatryPreconditionData = z.infer<
+  typeof pagedListReadPodiatryPreconditionSchema
 >;

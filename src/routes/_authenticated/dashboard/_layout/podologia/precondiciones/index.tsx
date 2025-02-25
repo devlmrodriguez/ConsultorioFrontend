@@ -3,7 +3,10 @@ import {
   usePodiatryPreconditionDeleteMutation,
   usePodiatryPreconditionsQuery,
 } from "../../../../../../hooks/podiatry-precondition-hooks";
-import { readPodiatryPreconditionDataSchema } from "../../../../../../models/podiatry-precondition/podiatry-precondition-data";
+import {
+  pagedListReadPodiatryPreconditionSchema,
+  readPodiatryPreconditionDataSchema,
+} from "../../../../../../models/podiatry-precondition/podiatry-precondition-data";
 import { Button, Group, Loader, Stack } from "@mantine/core";
 import { PodiatryPreconditionsTable } from "../../../../../../components/podiatry-precondition/PodiatryReasonsTable";
 
@@ -31,7 +34,9 @@ function RouteComponent() {
     return <Group>{query.error.details.title}</Group>;
   }
 
-  const parsedData = query.data.map((readPodiatryPreconditionData) =>
+  const parsedData = pagedListReadPodiatryPreconditionSchema.parse(query.data);
+
+  const parsedDataItems = parsedData.items.map((readPodiatryPreconditionData) =>
     readPodiatryPreconditionDataSchema.parse(readPodiatryPreconditionData),
   );
 
@@ -43,7 +48,7 @@ function RouteComponent() {
         </Button>
       </Group>
       <PodiatryPreconditionsTable
-        data={parsedData}
+        data={parsedDataItems}
         onDeletePodiatryPreconditionClick={onDeletePodiatryPreconditionClick}
       />
     </Stack>

@@ -1,12 +1,6 @@
 import { Button, Group, Space, Stack } from "@mantine/core";
-import {
-  FormErrors,
-  useForm,
-  UseFormReturnType,
-  zodResolver,
-} from "@mantine/form";
+import { FormErrors, UseFormReturnType } from "@mantine/form";
 import React from "react";
-import { ZodSchema } from "zod";
 
 export interface CrudFormProps<TData extends Record<string, unknown>> {
   data?: TData;
@@ -17,26 +11,15 @@ export interface CrudFormProps<TData extends Record<string, unknown>> {
   initialValues?: Partial<TData>;
 }
 
-// Internal props with schema and children
 interface InternalCrudFormProps<TData extends Record<string, unknown>>
   extends CrudFormProps<TData> {
-  saveSchema: ZodSchema<TData>;
-
-  // Render prop, pass form to inner children
-  children: (
-    form: UseFormReturnType<TData, (values: TData) => TData>,
-  ) => React.ReactNode;
+  form: UseFormReturnType<TData, (values: TData) => TData>;
+  children: React.ReactNode;
 }
 
 export function CrudForm<TData extends Record<string, unknown>>(
   props: InternalCrudFormProps<TData>,
 ) {
-  const form = useForm<TData>({
-    mode: "uncontrolled",
-    initialValues: props.data ?? (props.initialValues as TData),
-    validate: zodResolver(props.saveSchema),
-  });
-
   const onSubmitForm = (values: TData) => {
     if (props.data === undefined) {
       props.onCreateClick?.(values);
@@ -50,14 +33,14 @@ export function CrudForm<TData extends Record<string, unknown>>(
   };
 
   const onDeleteClick = () => {
-    const values = form.getValues();
+    const values = props.form.getValues();
     props.onDeleteClick?.(values);
   };
 
   return (
-    <form onSubmit={form.onSubmit(onSubmitForm, onError)}>
+    <form onSubmit={props.form.onSubmit(onSubmitForm, onError)}>
       <Stack>
-        {props.children(form)}
+        {props.children}
 
         {!props.readOnly && (
           <Group justify="end">

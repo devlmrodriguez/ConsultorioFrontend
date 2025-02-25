@@ -9,7 +9,8 @@ import {
   UnstyledButton,
 } from "@mantine/core";
 import { MantineLogo } from "@mantinex/mantine-logo";
-import { IconChevronDown, IconLogout, IconSettings } from "@tabler/icons-react";
+// import { IconChevronDown, IconLogout, IconSettings } from "@tabler/icons-react";
+import { IconChevronDown, IconLogout } from "@tabler/icons-react";
 import { useState } from "react";
 import { useApiQuery } from "../../../hooks/api-query.hook";
 import { API_ROUTES } from "../../../constants/api-routes";
@@ -92,9 +93,9 @@ export function Header(props: HeaderProps) {
         </Menu.Target>
         <Menu.Dropdown>
           <Menu.Label>Configuración</Menu.Label>
-          <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>
+          {/* <Menu.Item leftSection={<IconSettings size={16} stroke={1.5} />}>
             Mi configuración
-          </Menu.Item>
+          </Menu.Item> */}
           <Menu.Item
             leftSection={<IconLogout size={16} stroke={1.5} />}
             onClick={props.onExitButtonClick}

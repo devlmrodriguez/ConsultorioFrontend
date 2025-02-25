@@ -1,5 +1,6 @@
 import { API_ROUTES } from "../constants/api-routes";
 import {
+  PagedListReadPodiatryPreconditionData,
   ReadPodiatryPreconditionData,
   SavePodiatryPreconditionData,
 } from "../models/podiatry-precondition/podiatry-precondition-data";
@@ -15,12 +16,17 @@ export const podiatryPreconditionQueryKey = (
   podiatryPreconditionId: string,
 ) => ["podiatry-precondition", podiatryPreconditionId];
 
-export const podiatryPreconditionsQueryKey = ["podiatry-preconditions"];
+export const podiatryPreconditionsQueryKey = (
+  searchTerm?: string,
+  filters?: string,
+  page?: number,
+  pageSize?: number,
+) => ["podiatry-preconditions", searchTerm, filters, page, pageSize];
 
 export const usePodiatryPreconditionCreateMutation = () =>
   useResourceCreateMutation<SavePodiatryPreconditionData>(
     API_ROUTES.PodiatryPreconditions,
-    podiatryPreconditionsQueryKey,
+    podiatryPreconditionsQueryKey(),
   );
 
 export const usePodiatryPreconditionUpdateMutation = (
@@ -30,14 +36,14 @@ export const usePodiatryPreconditionUpdateMutation = (
     API_ROUTES.PodiatryPreconditions,
     podiatryPreconditionId,
     podiatryPreconditionQueryKey,
-    podiatryPreconditionsQueryKey,
+    podiatryPreconditionsQueryKey(),
   );
 
 export const usePodiatryPreconditionDeleteMutation = () =>
   useResourceDeleteMutation(
     API_ROUTES.PodiatryPreconditions,
     podiatryPreconditionQueryKey,
-    podiatryPreconditionsQueryKey,
+    podiatryPreconditionsQueryKey(),
   );
 
 export const usePodiatryPreconditionQuery = (podiatryPreconditionId: string) =>
@@ -47,8 +53,17 @@ export const usePodiatryPreconditionQuery = (podiatryPreconditionId: string) =>
     podiatryPreconditionQueryKey,
   );
 
-export const usePodiatryPreconditionsQuery = () =>
-  useResourcesQuery<ReadPodiatryPreconditionData>(
+export const usePodiatryPreconditionsQuery = (
+  searchTerm?: string,
+  filters?: string,
+  page?: number,
+  pageSize?: number,
+) =>
+  useResourcesQuery<PagedListReadPodiatryPreconditionData>(
     API_ROUTES.PodiatryPreconditions,
-    podiatryPreconditionsQueryKey,
+    podiatryPreconditionsQueryKey(searchTerm, filters, page, pageSize),
+    searchTerm,
+    filters,
+    page,
+    pageSize,
   );

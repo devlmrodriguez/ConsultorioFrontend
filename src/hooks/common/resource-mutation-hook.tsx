@@ -4,7 +4,7 @@ import { axiosRequest } from "../../utils/axios-helpers";
 
 export function useResourceCreateMutation<TSaveResourceData>(
   url: string,
-  resourcesQueryKey: string[],
+  resourcesQueryKey: (string | number | undefined)[],
 ) {
   const mutationFn = (saveResourceData: TSaveResourceData) => {
     return axiosRequest({
@@ -32,7 +32,7 @@ export function useResourceUpdateMutation<TSaveResourceData>(
   url: string,
   resourceId: string,
   resourceQueryKey: (resouceId: string) => string[],
-  resourcesQueryKey: string[],
+  resourcesQueryKey: (string | number | undefined)[],
 ) {
   const mutationFn = (saveResourceData: TSaveResourceData) => {
     return axiosRequest({
@@ -63,7 +63,7 @@ export function useResourceUpdateMutation<TSaveResourceData>(
 export function useResourceDeleteMutation(
   url: string,
   resourceQueryKey: (resouceId: string) => string[],
-  resourcesQueryKey: string[],
+  resourcesQueryKey: (string | number | undefined)[],
 ) {
   const mutationFn = (resourceId: string) => {
     return axiosRequest({

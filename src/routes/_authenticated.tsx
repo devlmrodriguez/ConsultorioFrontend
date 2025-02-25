@@ -1,7 +1,10 @@
 import { createFileRoute, Navigate, Outlet } from "@tanstack/react-router";
-import { useApiQuery } from "../hooks/api-query.hook";
 import { API_ROUTES } from "../constants/api-routes";
 import { useCredentialsStore } from "../stores/credentials-store";
+import { Loader } from "@mantine/core";
+import { useQuery } from "@tanstack/react-query";
+import { axiosRequest } from "../utils/axios-helpers";
+import { ErrorWithDetails } from "../models/api-error/error-with-details";
 
 export const Route = createFileRoute("/_authenticated")({
   component: RouteComponent,
@@ -10,23 +13,39 @@ export const Route = createFileRoute("/_authenticated")({
 function RouteComponent() {
   const credentialsStore = useCredentialsStore();
 
-  const queryEnabled = credentialsStore.credentials !== null;
+  const query = useQuery<unknown, ErrorWithDetails>({
+    queryKey: ["auth-check"],
+    queryFn: () =>
+      axiosRequest({
+        url: API_ROUTES.AuthCheck,
+        method: "GET",
+      }),
+    retry: (_, error) => {
+      const isServerOfflineProbably = error.details.status === undefined;
 
-  // Very important to check for auth and automatically trigger interceptors in axios
-  // Also, MUST ADD access token as the query key, otherwise previous unauthorized response gets cached
-  const query = useApiQuery(
-    API_ROUTES.AuthCheck,
-    ["auth-check", credentialsStore.credentials?.accessToken ?? ""],
-    "GET",
-    queryEnabled,
-  );
+      if (
+        isServerOfflineProbably ||
+        error.details.status === 401 ||
+        error.details.status === 403
+      ) {
+        if (credentialsStore.credentials !== null) {
+          console.debug(
+            "Removing credentials in retry query due to auth-check failure",
+          );
+          credentialsStore.removeCredentials();
+        }
+      }
+
+      return false;
+    },
+  });
 
   if (query.isError) {
-    credentialsStore.removeCredentials();
+    return <Navigate to="/login" />;
   }
 
-  if (credentialsStore.credentials === null || query.isError) {
-    return <Navigate to="/login" />;
+  if (query.isPending) {
+    return <Loader />;
   }
 
   return <Outlet />;

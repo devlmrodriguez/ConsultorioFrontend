@@ -9,6 +9,9 @@ export const saveLeadHistoryDataSchema = z.object({
 export const readLeadHistoryDataSchema = saveLeadHistoryDataSchema.extend({
   id: z.coerce.string().nonempty().uuid(),
   dateOfCreation: z.coerce.date(),
+  creatorFirstName: z.string().optional().nullable(),
+  creatorMiddleName: z.string().optional().nullable(),
+  creatorLastName: z.string().optional().nullable(),
 });
 
 export type SaveLeadHistoryData = z.infer<typeof saveLeadHistoryDataSchema>;

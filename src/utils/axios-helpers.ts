@@ -51,8 +51,8 @@ export const axiosRequest = <TResponseData>(config: AxiosRequestConfig) => {
         },
       };
 
-      console.debug(error);
-      console.debug(unexpectedError);
+      // console.debug(error);
+      // console.debug(unexpectedError);
 
       throw unexpectedError;
     }
@@ -65,8 +65,8 @@ export const axiosRequest = <TResponseData>(config: AxiosRequestConfig) => {
       },
     };
 
-    console.debug(error);
-    console.debug(unknownError);
+    // console.debug(error);
+    // console.debug(unknownError);
 
     throw unknownError;
   };
